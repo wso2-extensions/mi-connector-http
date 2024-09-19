@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+  ~
+  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
+  ~ Dissemination of any information or reproduction of any material contained
+  ~ herein is strictly forbidden, unless permitted by WSO2 in accordance with
+  ~ the WSO2 Software License available at: https://wso2.com/licenses/eula/3.2
+  ~ For specific language governing the permissions and limitations under
+  ~ this license, please see the license as well as any agreement you’ve
+  ~ entered into with WSO2 governing the purchase of this software and any
+  ~ associated services.
+  -->
+
+<component name="functions" type="synapse/template">
+    <subComponents>
+        <component name="get">
+            <file>get.xml</file>
+            <description>Send a GET HTTP request.</description>
+        </component>
+        <component name="post">
+            <file>post.xml</file>
+            <description>Send a POST HTTP request.</description>
+        </component>
+        <component name="put">
+            <file>put.xml</file>
+            <description>Send a PUT HTTP request.</description>
+        </component>
+        <component name="patch">
+            <file>patch.xml</file>
+            <description>Send a PATCH HTTP request.</description>
+        </component>
+        <component name="delete">
+            <file>delete.xml</file>
+            <description>Send a DELETE HTTP request.</description>
+        </component>
+        <component name="head">
+            <file>head.xml</file>
+            <description>Send a HEAD HTTP request.</description>
+        </component>
+        <component name="options">
+            <file>options.xml</file>
+            <description>Send a OPTIONS HTTP request.</description>
+        </component>
+    </subComponents>
+</component>

@@ -1,0 +1,77 @@
+{
+  "name": "HTTP",
+  "owner": "WSO2",
+  "product": "MI",
+  "category": "Networking",
+  "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/http-connector/http-overview/",
+  "mavenGroupId": "org.wso2.integration.connector",
+  "mavenArtifactId": "mi-connector-http",
+  "description": "The HTTP Connector allows you to access and interact with HTTP endpoints. This lets you send and receive HTTP requests and responses.",
+  "status": "Active",
+  "rank": 51,
+  "type": "Connector",
+  "releases": [
+    {
+      "tagName": "v0.1.0",
+      "products": [
+        "MI 4.4.0"
+      ],
+      "operations": [
+        {
+          "name":"init",
+          "description":"Config operation",
+          "isHidden":true
+        },
+        {
+          "name":"get",
+          "description":"Send an HTTP GET request.",
+          "isHidden":false
+        },
+        {
+          "name":"delete",
+          "description":"Send an HTTP DELETE request.",
+          "isHidden":false
+        },
+        {
+          "name":"post",
+          "description":"Send an HTTP POST request.",
+          "isHidden":false
+        },
+        {
+          "name":"put",
+          "description":"Send an HTTP PUT request.",
+          "isHidden":false
+        },
+        {
+          "name":"patch",
+          "description":"Send an HTTP PATCH request.",
+          "isHidden":false
+        },
+        {
+          "name":"head",
+          "description":"Send an HTTP HEAD request.",
+          "isHidden":false
+        },
+        {
+          "name":"options",
+          "description":"Send an HTTP OPTIONS request.",
+          "isHidden":false
+        }
+      ],
+      "connections": [
+        {
+          "name": "http",
+          "description": "Connection for interacting with HTTP endpoints."
+        },
+        {
+          "name": "https",
+          "description": "Connection for interacting with HTTPS endpoints."
+        }
+      ],
+      "isHidden": false
+    }
+  ],
+  "labels": [
+    "networking"
+  ]
+}

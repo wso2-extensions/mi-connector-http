@@ -18,4 +18,5 @@
         <dependency component="functions"/>
         <description>WSO2 HTTP Connector Library</description>
     </component>
+    <displayName>HTTP</displayName>
 </connector>

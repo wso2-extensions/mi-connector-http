@@ -17,6 +17,7 @@
     <subComponents>
         <component name="init">
             <file>init.xml</file>
+            <displayName>Init</displayName>
             <description>Init configuration file for http connector.</description>
             <hidden>true</hidden>
         </component>

@@ -46,22 +46,12 @@ import static org.junit.Assert.assertTrue;
 public class TestRestURLBuilder {
 
     @Test
-    public void testSetHeaders() {
-        String expectedHeaders = "[[\"Content-Type\", \"application/xml\"]]";
-        RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/xml\"]]");
-        String obtainedHeaders = restURLBuilder.getHeaders();
-        assertEquals(expectedHeaders, obtainedHeaders);
-    }
-
-
-    @Test
     public void testProcessUrlPath() throws AxisFault {
 
         String relativePath = "/books/${var.id}/author/${var.name}";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setRelativePath(relativePath);
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
         messageContext.setVariable("id", 1);
         messageContext.setVariable("name", "John");
         restURLBuilder.connect(messageContext);
@@ -74,8 +64,8 @@ public class TestRestURLBuilder {
 
         String relativePath = "/books/${var.id}";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setRelativePath(relativePath);
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
         restURLBuilder.connect(messageContext);
         String expectedUrlPath = (String) messageContext.getProperty(Constants.URL_PATH);
         assertEquals(expectedUrlPath, "/books/");
@@ -85,8 +75,8 @@ public class TestRestURLBuilder {
     public void testAddHeaders() throws AxisFault {
 
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/xml\"], [\"Accept\", \"application/xml\"]]");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/xml\"], [\"Accept\", \"application/xml\"]]");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
@@ -113,8 +103,8 @@ public class TestRestURLBuilder {
     public void testAddEmptyHeaders() throws AxisFault {
 
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
@@ -126,10 +116,10 @@ public class TestRestURLBuilder {
 
         String expectedBody = "<jsonObject><id>7</id><name>Peoples</name></jsonObject>";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/json\"]]");
-        restURLBuilder.setRequestBodyType("json");
-        restURLBuilder.setRequestBody("{\"id\": 7, \"name\": \"Peoples\"}");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/json\"]]");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "json");
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "{\"id\": 7, \"name\": \"Peoples\"}");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         String actualBody =
@@ -142,10 +132,10 @@ public class TestRestURLBuilder {
 
         String expectedBody = "<bank><id>7</id><name>Peoples</name></bank>";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/xml\"]]");
-        restURLBuilder.setRequestBodyType("xml");
-        restURLBuilder.setRequestBody("<bank><id>7</id><name>Peoples</name></bank>");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/xml\"]]");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "xml");
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "<bank><id>7</id><name>Peoples</name></bank>");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         String actualBody =
@@ -158,10 +148,10 @@ public class TestRestURLBuilder {
 
         String expectedBody = "<axis2ns1:text xmlns:axis2ns1=\"http://ws.apache.org/commons/ns/payload\">7</axis2ns1:text>";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"text/plain\"]]");
-        restURLBuilder.setRequestBodyType("text");
-        restURLBuilder.setRequestBody("7");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"text/plain\"]]");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "text");
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "7");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         String actualBody =
@@ -173,18 +163,18 @@ public class TestRestURLBuilder {
     public void testProcessNoRequestBody() throws AxisFault {
 
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"text/plain\"]]");
-        restURLBuilder.setRequestBodyType("text");
-        restURLBuilder.setRequestBody("7");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"text/plain\"]]");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "text");
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "7");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         SOAPEnvelope initialEnvelope = axis2MessageContext.getEnvelope();
 
         RestURLBuilder newRestURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"text/plain\"]]");
-        newRestURLBuilder.setRequestBodyType("text");
         MessageContext newMessageContext = createMessageContext();
+        newMessageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"text/plain\"]]");
+        newMessageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "text");
         newMessageContext.setEnvelope(initialEnvelope);
         newRestURLBuilder.connect(newMessageContext);
         Axis2MessageContext newAxis2MessageContext = (Axis2MessageContext) newMessageContext;
@@ -197,19 +187,19 @@ public class TestRestURLBuilder {
     public void testProcessEmptyRequestBody() throws AxisFault {
 
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/json\"]]");
-        restURLBuilder.setRequestBodyType("json");
-        restURLBuilder.setRequestBody("{ \"age\": 24 }");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/json\"]]");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "json");
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "{ \"age\": 24 }");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         SOAPEnvelope initialEnvelope = axis2MessageContext.getEnvelope();
 
         RestURLBuilder newRestURLBuilder = new RestURLBuilder();
-        restURLBuilder.setHeaders("[[\"Content-Type\", \"application/json\"]]");
-        newRestURLBuilder.setRequestBodyType("json");
-        newRestURLBuilder.setRequestBody("");
         MessageContext newMessageContext = createMessageContext();
+        newMessageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/json\"]]");
+        newMessageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "json");
+        newMessageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "");
         newMessageContext.setEnvelope(initialEnvelope);
         newRestURLBuilder.connect(newMessageContext);
         Axis2MessageContext newAxis2MessageContext = (Axis2MessageContext) newMessageContext;
@@ -222,8 +212,8 @@ public class TestRestURLBuilder {
     public void testProcessNoRequestBodyType() throws AxisFault {
 
         RestURLBuilder restURLBuilder = new RestURLBuilder();
-        restURLBuilder.setRequestBody("7");
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "7");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         OMElement bodyElement = axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement();
@@ -236,10 +226,10 @@ public class TestRestURLBuilder {
         String expectedError = "Error creating JSON Payload from source <bank><id>7</id><name>Peoples</name></bank>";
         SynapseException synapseException = assertThrows(SynapseException.class, () -> {
             RestURLBuilder restURLBuilder = new RestURLBuilder();
-            restURLBuilder.setHeaders("[[\"Content-Type\", \"application/xml\"]]");
-            restURLBuilder.setRequestBodyType("json");
-            restURLBuilder.setRequestBody("<bank><id>7</id><name>Peoples</name></bank>");
             MessageContext messageContext = createMessageContext();
+            messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/xml\"]]");
+            messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "json");
+            messageContext.setProperty(Constants.REQUEST_BODY_IDENTIFIER, "<bank><id>7</id><name>Peoples</name></bank>");
             restURLBuilder.connect(messageContext);
         });
         assertEquals(expectedError, synapseException.getMessage());

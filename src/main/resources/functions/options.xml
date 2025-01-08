@@ -39,6 +39,11 @@
     <parameter name="forceHttpContentLength" description=""/>
     <parameter name="copyContentLengthFromIncoming" description=""/>
     <sequence>
+        <property name="HTTP_CONN_RELATIVE_PATH" expression="$func:relativePath"/>
+        <property name="HTTP_CONN_HEADERS" expression="$func:headers"/>
+        <property name="HTTP_CONN_REQUEST_BODY_TYPE" expression="$func:requestBodyType"/>
+        <property name="HTTP_CONN_REQUEST_BODY" expression="$func:requestBody"/>
+
         <!--    HTTP Transport Properties    -->
         <property name="POST_TO_URI" scope="axis2" expression="$func:postToUri"/>
         <property name="FORCE_SC_ACCEPTED" scope="axis2" expression="$func:forceScAccepted"/>
@@ -55,12 +60,8 @@
         <property name="FORCE_HTTP_CONTENT_LENGTH" scope="axis2" expression="$func:forceHttpContentLength"/>
         <property name="COPY_CONTENT_LENGTH_FROM_INCOMING" scope="axis2" expression="$func:copyContentLengthFromIncoming"/>
 
-        <class name="org.wso2.carbon.http.connector.RestURLBuilder">
-            <property name="relativePath" expression="$func:relativePath"/>
-            <property name="headers" expression="$func:headers"/>
-            <property name="requestBodyType" expression="$func:requestBodyType"/>
-            <property name="requestBody" expression="$func:requestBody"/>
-        </class>
+        <class name="org.wso2.carbon.http.connector.RestURLBuilder"/>
+
         <property name="HTTP_METHOD" scope="axis2" type="STRING" value="OPTIONS"/>
         <property name="REST_URL_POSTFIX" scope="axis2" action="remove"/>
         <call>

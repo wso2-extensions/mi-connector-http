@@ -55,6 +55,11 @@ import static org.wso2.carbon.http.connector.Constants.XML_TYPE;
 
 public class RestURLBuilder extends AbstractConnector {
 
+    private static final String RELATIVE_PATH = "HTTP_CONN_RELATIVE_PATH";
+    private static final String HEADERS = "HTTP_CONN_HEADERS";
+    private static final String REQUEST_BODY_TYPE = "HTTP_CONN_REQUEST_BODY_TYPE";
+    private static final String REQUEST_BODY = "HTTP_CONN_REQUEST_BODY";
+
     private String relativePath = "";
     private String headers = "[]";
     private String requestBodyType = "";
@@ -103,18 +108,29 @@ public class RestURLBuilder extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
 
-        handleInputHeaders(messageContext);
-        processRequestBody();
-        handlePayload(messageContext);
-        resolveRelativePath(messageContext);
+        String relativePath = (String) messageContext.getProperty(RELATIVE_PATH) != null ?
+                (String) messageContext.getProperty(RELATIVE_PATH) : this.relativePath;
+        String headers =
+                (String) messageContext.getProperty(HEADERS) != null ? (String) messageContext.getProperty(HEADERS) :
+                        this.headers;
+        String requestBodyType = (String) messageContext.getProperty(REQUEST_BODY_TYPE) != null ?
+                (String) messageContext.getProperty(REQUEST_BODY_TYPE) : this.requestBodyType;
+        String requestBody = (String) messageContext.getProperty(REQUEST_BODY) != null ?
+                (String) messageContext.getProperty(REQUEST_BODY) : this.requestBody;
+
+        handleInputHeaders(messageContext, headers);
+        requestBody = getProcessedRequestBody(requestBodyType, requestBody);
+        handlePayload(messageContext, requestBodyType, requestBody);
+        resolveRelativePath(messageContext, relativePath);
     }
 
     /**
      * Resolves the relative path using inline expression templates.
      *
      * @param messageContext the message context
+     * @param relativePath the relative path to be resolved
      */
-    private void resolveRelativePath(MessageContext messageContext) {
+    private void resolveRelativePath(MessageContext messageContext, String relativePath) {
 
         try {
             relativePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, relativePath);
@@ -129,12 +145,14 @@ public class RestURLBuilder extends AbstractConnector {
      * It processes the request body and sets the appropriate content type.
      *
      * @param messageContext the message context
+     * @param requestBodyType the type of the request body
+     * @param requestBody the request body
      */
-    private void handlePayload(MessageContext messageContext) {
+    private void handlePayload(MessageContext messageContext, String requestBodyType, String requestBody) {
 
         if (StringUtils.isNotEmpty(requestBody) && StringUtils.isNotEmpty(requestBodyType)) {
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext)messageContext).getAxis2MessageContext();
-            if (requestBodyType.equals("xml")) {
+            if (requestBodyType.equalsIgnoreCase(XML_TYPE)) {
                 try {
                     requestBody = "<pfPadding>" + requestBody + "</pfPadding>";
                     JsonUtil.removeJsonPayload(axis2MessageContext);
@@ -148,13 +166,13 @@ public class RestURLBuilder extends AbstractConnector {
                 } catch (XMLStreamException var9) {
                     this.handleException("Error creating SOAP Envelope from source " + requestBody, messageContext);
                 }
-            } else if (requestBodyType.equals("json")) {
+            } else if (requestBodyType.equalsIgnoreCase(JSON_TYPE)) {
                 try {
                     JsonUtil.getNewJsonPayload(axis2MessageContext, requestBody, true, true);
                 } catch (AxisFault var8) {
                     this.handleException("Error creating JSON Payload from source " + requestBody, messageContext);
                 }
-            } else if (requestBodyType.equals("text")) {
+            } else if (requestBodyType.equalsIgnoreCase(TEXT_TYPE)) {
                 JsonUtil.removeJsonPayload(axis2MessageContext);
                 axis2MessageContext.getEnvelope().getBody().addChild(Utils.getTextElement(requestBody));
             }
@@ -164,14 +182,19 @@ public class RestURLBuilder extends AbstractConnector {
 
     /**
      * Processes the request body by removing surrounding single quotes if the type is JSON.
+     *
+     * @param requestBodyType the type of the request body
+     * @param requestBody the request body
+     * @return the processed request body
      */
-    private void processRequestBody() {
+    private String getProcessedRequestBody(String requestBodyType, String requestBody) {
 
         if (requestBodyType.equals(JSON_TYPE)) {
             if (requestBody.startsWith(Constants.SINGLE_QUOTE) && requestBody.endsWith(Constants.SINGLE_QUOTE)) {
-                requestBody = requestBody.substring(1, requestBody.length() - 1);
+                return requestBody.substring(1, requestBody.length() - 1);
             }
         }
+        return requestBody;
     }
 
     /**
@@ -256,10 +279,13 @@ public class RestURLBuilder extends AbstractConnector {
 
     /**
      * Handles input headers by processing inline expression templates and setting transport headers.
+     * This method processes the headers provided as a string in the JSON array format,
+     * evaluates any inline expressions, and sets the transport headers in the message context.
      *
      * @param messageContext the message context
+     * @param headers the headers in JSON array format
      */
-    private void handleInputHeaders(MessageContext messageContext) {
+    private void handleInputHeaders(MessageContext messageContext, String headers) {
 
         try {
             if (StringUtils.isNotEmpty(headers)) {

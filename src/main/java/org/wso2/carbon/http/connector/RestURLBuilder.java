@@ -21,6 +21,7 @@ package org.wso2.carbon.http.connector;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -44,8 +45,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import static org.wso2.carbon.http.connector.Constants.HEADERS_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.JSON_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.JSON_TYPE;
+import static org.wso2.carbon.http.connector.Constants.RELATIVE_PATH_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_TYPE_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.SOAP11_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.SOAP12_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.TEXT_CONTENT_TYPE;
@@ -55,68 +60,43 @@ import static org.wso2.carbon.http.connector.Constants.XML_TYPE;
 
 public class RestURLBuilder extends AbstractConnector {
 
-    private static final String RELATIVE_PATH = "HTTP_CONN_RELATIVE_PATH";
-    private static final String HEADERS = "HTTP_CONN_HEADERS";
-    private static final String REQUEST_BODY_TYPE = "HTTP_CONN_REQUEST_BODY_TYPE";
-    private static final String REQUEST_BODY = "HTTP_CONN_REQUEST_BODY";
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
-    private String relativePath = "";
-    private String headers = "[]";
-    private String requestBodyType = "";
-    private String requestBody = "";
+    private String relativePath;
+    private String headers;
+    private String requestBodyType;
+    private String requestBody;
 
-    public String getRelativePath() {
+    public RestURLBuilder() {
 
-        return relativePath;
-    }
+        relativePath = "";
+        headers = "[]";
+        requestBodyType = "";
+        requestBody = "";
 
-    public void setRelativePath(String relativePath) {
-
-        this.relativePath = relativePath;
-    }
-
-    public String getRequestBodyType() {
-
-        return requestBodyType;
-    }
-
-    public void setRequestBodyType(String requestBodyType) {
-
-        this.requestBodyType = requestBodyType.toLowerCase();
-    }
-
-    public String getRequestBody() {
-
-        return requestBody;
-    }
-
-    public void setRequestBody(String requestBody) {
-
-        this.requestBody = requestBody;
-    }
-
-    public String getHeaders() {
-
-        return headers;
-    }
-
-    public void setHeaders(String headers) {
-
-        this.headers = headers;
+        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
+        Map props = StAXUtils.loadFactoryProperties("XMLInputFactory.properties");
+        if (props != null) {
+            for (Object o : props.entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
+                xmlInputFactory.setProperty((String) entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     @Override
     public void connect(MessageContext messageContext) {
 
-        String relativePath = (String) messageContext.getProperty(RELATIVE_PATH) != null ?
-                (String) messageContext.getProperty(RELATIVE_PATH) : this.relativePath;
-        String headers =
-                (String) messageContext.getProperty(HEADERS) != null ? (String) messageContext.getProperty(HEADERS) :
-                        this.headers;
-        String requestBodyType = (String) messageContext.getProperty(REQUEST_BODY_TYPE) != null ?
-                (String) messageContext.getProperty(REQUEST_BODY_TYPE) : this.requestBodyType;
-        String requestBody = (String) messageContext.getProperty(REQUEST_BODY) != null ?
-                (String) messageContext.getProperty(REQUEST_BODY) : this.requestBody;
+        String relativePath = messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) != null ?
+                (String) messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) : this.relativePath;
+        String headers = messageContext.getProperty(HEADERS_IDENTIFIER) != null ? (String) messageContext.getProperty(
+                HEADERS_IDENTIFIER) :
+                this.headers;
+        String requestBodyType = messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) != null ?
+                (String) messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) : this.requestBodyType;
+        String requestBody = messageContext.getProperty(REQUEST_BODY_IDENTIFIER) != null ?
+                (String) messageContext.getProperty(REQUEST_BODY_IDENTIFIER) : this.requestBody;
 
         handleInputHeaders(messageContext, headers);
         requestBody = getProcessedRequestBody(requestBodyType, requestBody);
@@ -156,7 +136,6 @@ public class RestURLBuilder extends AbstractConnector {
                 try {
                     requestBody = "<pfPadding>" + requestBody + "</pfPadding>";
                     JsonUtil.removeJsonPayload(axis2MessageContext);
-                    XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
                     XMLStreamReader xmlReader = xmlInputFactory.createXMLStreamReader(new StringReader(requestBody));
                     StAXBuilder builder = new StAXOMBuilder(xmlReader);
                     OMElement omXML = builder.getDocumentElement();

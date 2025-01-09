@@ -2,13 +2,13 @@
     "name": "HTTP",
     "owner": "WSO2",
     "product": "MI",
-    "category": "Networking",
-    "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/http-connector/http-overview/",
+    "category": "Developer Tools",
+    "documentationUrl": "https://mi.docs.wso2.com/en/4.4.0/",
     "mavenGroupId": "org.wso2.integration.connector",
     "mavenArtifactId": "mi-connector-http",
     "description": "The HTTP Connector allows you to access and interact with HTTP endpoints. This lets you send and receive HTTP requests and responses.",
     "status": "Active",
-    "rank": 51,
+    "rank": 5,
     "type": "Connector",
     "releases": [
         {
@@ -72,6 +72,7 @@
         }
     ],
     "labels": [
-        "networking"
+        "http",
+        "communication"
     ]
 }

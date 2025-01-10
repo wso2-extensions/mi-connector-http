@@ -1,0 +1,452 @@
+{
+  "connectorName": "http",
+  "connectionName": "https",
+  "title": "HTTPS Connection",
+  "help": "<h1>HTTPS Connection</h1> <b>The HTTP Connector allows you to send a https request.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "baseUrl",
+              "displayName": "Base URL",
+              "inputType": "string",
+              "defaultValue": "https://",
+              "required": "true",
+              "helpTip": "Enter the base URL of the service, which serves as the root endpoint for all API requests."
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Certificate",
+              "isCollapsed": "true",
+              "elements": [
+                {
+                  "type": "attribute",
+                    "value": {
+                      "name": "certificateType",
+                      "displayName": "Certificate Type",
+                      "inputType": "combo",
+                      "defaultValue": "File",
+                      "comboValues": [
+                        "File",
+                        "Configurable"
+                      ],
+                      "required": "false",
+                      "helpTip": "Select Certificate Input Type."
+                    }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "trustStoreCertificatePath",
+                    "displayName": "Certificate File",
+                    "inputType": "resource",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Select certificate file.",
+                    "enableCondition": [{"certificateType": "File"}],
+                    "keyType": "crt",
+                    "canAddNew": true
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "certificateConfigurable",
+                    "displayName": "Certificate Configurable",
+                    "inputType": "expression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Select certificate configurable.",
+                    "enableCondition": [{"certificateType": "Configurable"}],
+                    "keyType": "configurable",
+                    "configurableType": "cert"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Auth Configuration",
+              "isCollapsed": "true",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "authType",
+                    "displayName": "Auth Type",
+                    "inputType": "combo",
+                    "required": "false",
+                    "comboValues": [
+                      "None",
+                      "Basic Auth",
+                      "OAuth"
+                    ],
+                    "defaultValue": "None",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "basicCredentialsUsername",
+                    "displayName": "Username",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Enter Username",
+                    "enableCondition": [{"authType": "Basic Auth"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "basicCredentialsPassword",
+                    "displayName": "Password",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Enter Password",
+                    "enableCondition": [{"authType": "Basic Auth"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationMode",
+                    "displayName": "OAuth Authorization Mode",
+                    "inputType": "combo",
+                    "required": "true",
+                    "comboValues": [
+                      "Header",
+                      "Payload"
+                    ],
+                    "defaultValue": "Header",
+                    "enableCondition": [{"authType": "OAuth"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthGrantType",
+                    "displayName": "OAuth Grant Type",
+                    "inputType": "combo",
+                    "required": "false",
+                    "comboValues": [
+                      "Authorization Code",
+                      "Client Credentials",
+                      "Password"
+                    ],
+                    "defaultValue": "Authorization Code",
+                    "enableCondition": [{"authType": "OAuth"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthClientClientId",
+                    "displayName": "Client Id",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthClientClientSecret",
+                    "displayName": "Client Secret",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthClientTokenUrl",
+                    "displayName": "Token URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthClientAdditionalProperties",
+                    "displayName": "Additional Properties",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationClientId",
+                    "displayName": "Client Id",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationClientSecret",
+                    "displayName": "Client Secret",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationTokenUrl",
+                    "displayName": "Token URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationRefreshToken",
+                    "displayName": "Refresh Token",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthAuthorizationAdditionalProperties",
+                    "displayName": "Additional Properties",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordClientId",
+                    "displayName": "Client Id",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordClientSecret",
+                    "displayName": "Client Secret",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordTokenUrl",
+                    "displayName": "Token URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordUsername",
+                    "displayName": "Username",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordPassword",
+                    "displayName": "Password",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "oauthPasswordAdditionalProperties",
+                    "displayName": "Additional Properties",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Error Handling",
+              "isCollapsed": "true",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "timeoutDuration",
+                    "displayName": "Timeout Duration",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "timeoutAction",
+                    "displayName": "Timeout Action",
+                    "inputType": "combo",
+                    "defaultValue": "Never",
+                    "required": "false",
+                    "comboValues": [
+                      "Never",
+                      "Discard",
+                      "Fault"
+                    ],
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "suspendErrorCodes",
+                    "displayName": "Suspend Error Codes",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "suspendInitialDuration",
+                    "displayName": "Suspend Initial Duration",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "suspendMaximumDuration",
+                    "displayName": "Suspend Maximum Duration",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "suspendProgressionFactor",
+                    "displayName": "Suspend Progression Factor",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "retryErrorCodes",
+                    "displayName": "Retry Error Codes",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "retryCount",
+                    "displayName": "Retry Count",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "retryDelay",
+                    "displayName": "Retry Delay",
+                    "inputType": "string",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

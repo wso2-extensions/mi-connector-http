@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ ~
+ ~  WSO2 LLC. licenses this file to you under the Apache License,
+ ~  Version 2.0 (the "License"); you may not use this file except
+ ~  in compliance with the License.
+ ~  You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~  Unless required by applicable law or agreed to in writing,
+ ~  software distributed under the License is distributed on an
+ ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~  KIND, either express or implied.  See the License for the
+ ~  specific language governing permissions and limitations
+ ~  under the License.
+-->
+
+<template xmlns="http://ws.apache.org/ns/synapse" name="options">
+    <parameter name="relativePath" description=""/>
+    <parameter name="headers" description=""/>
+    <parameter name="requestBodyType" description=""/>
+    <parameter name="requestBody" description=""/>
+
+    <parameter name="postToUri" description=""/>
+    <parameter name="forceScAccepted" description=""/>
+    <parameter name="disableChunking" description=""/>
+    <parameter name="noEntityBody" description=""/>
+    <parameter name="forceHttp10" description=""/>
+    <parameter name="httpSc" description=""/>
+    <parameter name="nonErrorHttpStatusCodes" description=""/>
+    <parameter name="httpScDesc" description=""/>
+    <parameter name="faultsAsHttp200" description=""/>
+    <parameter name="noKeepAlive" description=""/>
+    <parameter name="restUrlPostfix" description=""/>
+    <parameter name="requestHostHeader" description=""/>
+    <parameter name="forcePostPutNobody" description=""/>
+    <parameter name="forceHttpContentLength" description=""/>
+    <parameter name="copyContentLengthFromIncoming" description=""/>
+    <sequence>
+        <property name="HTTP_CONN_RELATIVE_PATH" expression="$func:relativePath"/>
+        <property name="HTTP_CONN_HEADERS" expression="$func:headers"/>
+        <property name="HTTP_CONN_REQUEST_BODY_TYPE" expression="$func:requestBodyType"/>
+        <property name="HTTP_CONN_REQUEST_BODY" expression="$func:requestBody"/>
+
+        <!--    HTTP Transport Properties    -->
+        <property name="POST_TO_URI" scope="axis2" expression="$func:postToUri"/>
+        <property name="FORCE_SC_ACCEPTED" scope="axis2" expression="$func:forceScAccepted"/>
+        <property name="DISABLE_CHUNKING" scope="axis2" expression="$func:disableChunking"/>
+        <property name="NO_ENTITY_BODY" scope="axis2" expression="$func:noEntityBody" type="BOOLEAN"/>
+        <property name="FORCE_HTTP_1.0" scope="axis2" expression="$func:forceHttp10"/>
+        <property name="HTTP_SC" scope="axis2" expression="$func:httpSc"/>
+        <property name="non.error.http.status.codes" scope="axis2" expression="$func:nonErrorHttpStatusCodes" type="STRING"/>
+        <property name="HTTP_SC_DESC" scope="axis2" expression="$func:httpScDesc"/>
+        <property name="FAULTS_AS_HTTP_200" scope="axis2" expression="$func:faultsAsHttp200"/>
+        <property name="NO_KEEPALIVE" scope="axis2" expression="$func:noKeepAlive"/>
+        <property name="REQUEST_HOST_HEADER" scope="axis2" expression="$func:requestHostHeader"/>
+        <property name="FORCE_POST_PUT_NOBODY" scope="axis2" expression="$func:forcePostPutNobody" type="BOOLEAN"/>
+        <property name="FORCE_HTTP_CONTENT_LENGTH" scope="axis2" expression="$func:forceHttpContentLength"/>
+        <property name="COPY_CONTENT_LENGTH_FROM_INCOMING" scope="axis2" expression="$func:copyContentLengthFromIncoming"/>
+
+        <class name="org.wso2.carbon.http.connector.RestURLBuilder"/>
+
+        <property name="HTTP_METHOD" scope="axis2" type="STRING" value="OPTIONS"/>
+        <property name="REST_URL_POSTFIX" scope="axis2" action="remove"/>
+        <call>
+            <endpoint key-expression="$ctx:httpConnectorConnectionEndpointName"/>
+        </call>
+        <property name="uri.var.base" action="remove"/>
+        <property name="uri.var.path" action="remove"/>
+        <property name="uri.var.query" action="remove"/>
+    </sequence>
+</template>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ ~
+ ~  WSO2 LLC. licenses this file to you under the Apache License,
+ ~  Version 2.0 (the "License"); you may not use this file except
+ ~  in compliance with the License.
+ ~  You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~  Unless required by applicable law or agreed to in writing,
+ ~  software distributed under the License is distributed on an
+ ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~  KIND, either express or implied.  See the License for the
+ ~  specific language governing permissions and limitations
+ ~  under the License.
+-->
+
+<component name="functions" type="synapse/template">
+    <subComponents>
+        <component name="get">
+            <file>get.xml</file>
+            <displayName>GET</displayName>
+            <description>Send a GET HTTP request.</description>
+        </component>
+        <component name="post">
+            <file>post.xml</file>
+            <displayName>POST</displayName>
+            <description>Send a POST HTTP request.</description>
+        </component>
+        <component name="put">
+            <file>put.xml</file>
+            <displayName>PUT</displayName>
+            <description>Send a PUT HTTP request.</description>
+        </component>
+        <component name="patch">
+            <file>patch.xml</file>
+            <displayName>PATCH</displayName>
+            <description>Send a PATCH HTTP request.</description>
+        </component>
+        <component name="delete">
+            <file>delete.xml</file>
+            <displayName>DELETE</displayName>
+            <description>Send a DELETE HTTP request.</description>
+        </component>
+        <component name="head">
+            <file>head.xml</file>
+            <displayName>HEAD</displayName>
+            <description>Send a HEAD HTTP request.</description>
+        </component>
+        <component name="options">
+            <file>options.xml</file>
+            <displayName>OPTIONS</displayName>
+            <description>Send a OPTIONS HTTP request.</description>
+        </component>
+    </subComponents>
+</component>

@@ -1,0 +1,189 @@
+{
+  "connectorName": "http",
+  "operationName": "options",
+  "title": "Send OPTIONS Request",
+  "help": "<h1>Send OPTIONS Request</h1> <b>The options operation.</b>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "http",
+                "https"
+              ],
+              "defaultType": "connection.http",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Request",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "relativePath",
+                    "displayName": "Relative Path",
+                    "inputType": "stringWithParamManager",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Enter the relative path for the specific API endpoint, appended to the base URL.",
+                    "matchPattern": "([^?&=]+)=([^&]+)",
+                    "initialSeparator": "?",
+                    "secondarySeparator": "&",
+                    "keyValueSeparator": "="
+                  }
+                },
+                {
+                  "type": "table",
+                  "value": {
+                    "name": "headers",
+                    "displayName": "Headers",
+                    "description": "Key value pairs fo headers",
+                    "tableKey": "propertyName",
+                    "tableValue": "propertyValue",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "propertyName",
+                          "displayName": "Name",
+                          "inputType": "string",
+                          "required": false,
+                          "helpTip": ""
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "propertyValue",
+                          "displayName": "Value",
+                          "inputType": "stringOrExpression",
+                          "required": false,
+                          "helpTip": ""
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyType",
+                    "displayName": "Content Type",
+                    "inputType": "combo",
+                    "defaultValue": "TEXT",
+                    "required": "false",
+                    "comboValues": [
+                      "JSON",
+                      "XML",
+                      "TEXT"
+                    ],
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBody",
+                    "displayName": "Request Body",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "{${payload}}",
+                    "required": "false",
+                    "helpTip": ""
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Properties",
+              "isCollapsed": "true",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "forceScAccepted",
+                    "displayName": "Force immediate 202 Response",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "disableChunking",
+                    "displayName": "Disable Chunking",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "forceHttp10",
+                    "displayName": "Force HTTP 1.0",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Force HTTP 1.0 for outgoing HTTP messages."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "noKeepAlive",
+                    "displayName": "No Keep-Alive",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Disable HTTP keep-alive for outgoing requests."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "forcePostPutNobody",
+                    "displayName": "Force no body for POST/PUT methods",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Allow sending a request without a body for POST and PUT HTTP methods. Applicable only for HTTP PassThrough transport."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "forceHttpContentLength",
+                    "displayName": "Force HTTP Content Length",
+                    "inputType": "checkbox",
+                    "defaultValue": false,
+                    "required": "false",
+                    "helpTip": "Send the request with content length (no chunking) when 'Content-Length' is present in the client request."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

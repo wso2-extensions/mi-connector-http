@@ -74,5 +74,26 @@
         <property name="uri.var.base" action="remove"/>
         <property name="uri.var.path" action="remove"/>
         <property name="uri.var.query" action="remove"/>
+        <property name="HTTP_CONN_RELATIVE_PATH" action="remove"/>
+        <property name="HTTP_CONN_HEADERS" action="remove"/>
+        <property name="HTTP_CONN_REQUEST_BODY_TYPE" action="remove"/>
+        <property name="HTTP_CONN_REQUEST_BODY_JSON" action="remove"/>
+        <property name="HTTP_CONN_REQUEST_BODY_XML" action="remove"/>
+        <property name="HTTP_CONN_REQUEST_BODY_TEXT" action="remove"/>
+
+        <property name="POST_TO_URI" action="remove"/>
+        <property name="FORCE_SC_ACCEPTED" action="remove"/>
+        <property name="DISABLE_CHUNKING" action="remove"/>
+        <property name="NO_ENTITY_BODY" action="remove"/>
+        <property name="FORCE_HTTP_1.0" action="remove"/>
+        <property name="HTTP_SC" action="remove"/>
+        <property name="non.error.http.status.codes" action="remove"/>
+        <property name="HTTP_SC_DESC" action="remove"/>
+        <property name="FAULTS_AS_HTTP_200" action="remove"/>
+        <property name="NO_KEEPALIVE" action="remove"/>
+        <property name="REQUEST_HOST_HEADER" action="remove"/>
+        <property name="FORCE_POST_PUT_NOBODY" action="remove"/>
+        <property name="FORCE_HTTP_CONTENT_LENGTH" action="remove"/>
+        <property name="COPY_CONTENT_LENGTH_FROM_INCOMING" action="remove"/>
     </sequence>
 </template>

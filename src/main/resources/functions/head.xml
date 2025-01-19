@@ -21,7 +21,9 @@
     <parameter name="relativePath" description=""/>
     <parameter name="headers" description=""/>
     <parameter name="requestBodyType" description=""/>
-    <parameter name="requestBody" description=""/>
+    <parameter name="requestBodyJson" description=""/>
+    <parameter name="requestBodyXml" description=""/>
+    <parameter name="requestBodyText" description=""/>
 
     <parameter name="postToUri" description=""/>
     <parameter name="forceScAccepted" description=""/>
@@ -42,7 +44,9 @@
         <property name="HTTP_CONN_RELATIVE_PATH" expression="$func:relativePath"/>
         <property name="HTTP_CONN_HEADERS" expression="$func:headers"/>
         <property name="HTTP_CONN_REQUEST_BODY_TYPE" expression="$func:requestBodyType"/>
-        <property name="HTTP_CONN_REQUEST_BODY" expression="$func:requestBody"/>
+        <property name="HTTP_CONN_REQUEST_BODY_JSON" expression="$func:requestBodyJson"/>
+        <property name="HTTP_CONN_REQUEST_BODY_XML" expression="$func:requestBodyXml"/>
+        <property name="HTTP_CONN_REQUEST_BODY_TEXT" expression="$func:requestBodyText"/>
 
         <!--    HTTP Transport Properties    -->
         <property name="POST_TO_URI" scope="axis2" expression="$func:postToUri"/>

@@ -25,7 +25,9 @@ public class Constants {
     public static final String RELATIVE_PATH_IDENTIFIER = "HTTP_CONN_RELATIVE_PATH";
     public static final String HEADERS_IDENTIFIER = "HTTP_CONN_HEADERS";
     public static final String REQUEST_BODY_TYPE_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_TYPE";
-    public static final String REQUEST_BODY_IDENTIFIER = "HTTP_CONN_REQUEST_BODY";
+    public static final String REQUEST_BODY_JSON_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_JSON";
+    public static final String REQUEST_BODY_XML_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_XML";
+    public static final String REQUEST_BODY_TEXT_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_TEXT";
     public static final QName TEXT_ELEMENT = new QName("http://ws.apache.org/commons/ns/payload", "text");
     public static final String JSON_TYPE = "json";
     public static final String XML_TYPE = "xml";

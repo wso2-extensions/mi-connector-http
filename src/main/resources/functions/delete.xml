@@ -20,8 +20,6 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="delete">
     <parameter name="relativePath" description=""/>
     <parameter name="headers" description=""/>
-    <parameter name="requestBodyType" description=""/>
-    <parameter name="requestBody" description=""/>
 
     <parameter name="postToUri" description=""/>
     <parameter name="forceScAccepted" description=""/>
@@ -41,8 +39,6 @@
     <sequence>
         <property name="HTTP_CONN_RELATIVE_PATH" expression="$func:relativePath"/>
         <property name="HTTP_CONN_HEADERS" expression="$func:headers"/>
-        <property name="HTTP_CONN_REQUEST_BODY_TYPE" expression="$func:requestBodyType"/>
-        <property name="HTTP_CONN_REQUEST_BODY" expression="$func:requestBody"/>
 
         <!--    HTTP Transport Properties    -->
         <property name="POST_TO_URI" scope="axis2" expression="$func:postToUri"/>
@@ -70,5 +66,22 @@
         <property name="uri.var.base" action="remove"/>
         <property name="uri.var.path" action="remove"/>
         <property name="uri.var.query" action="remove"/>
+        <property name="HTTP_CONN_RELATIVE_PATH" action="remove"/>
+        <property name="HTTP_CONN_HEADERS" action="remove"/>
+
+        <property name="POST_TO_URI" action="remove"/>
+        <property name="FORCE_SC_ACCEPTED" action="remove"/>
+        <property name="DISABLE_CHUNKING" action="remove"/>
+        <property name="NO_ENTITY_BODY" action="remove"/>
+        <property name="FORCE_HTTP_1.0" action="remove"/>
+        <property name="HTTP_SC" action="remove"/>
+        <property name="non.error.http.status.codes" action="remove"/>
+        <property name="HTTP_SC_DESC" action="remove"/>
+        <property name="FAULTS_AS_HTTP_200" action="remove"/>
+        <property name="NO_KEEPALIVE" action="remove"/>
+        <property name="REQUEST_HOST_HEADER" action="remove"/>
+        <property name="FORCE_POST_PUT_NOBODY" action="remove"/>
+        <property name="FORCE_HTTP_CONTENT_LENGTH" action="remove"/>
+        <property name="COPY_CONTENT_LENGTH_FROM_INCOMING" action="remove"/>
     </sequence>
 </template>

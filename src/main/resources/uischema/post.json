@@ -96,12 +96,49 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "requestBody",
+                    "name": "requestBodyJson",
                     "displayName": "Request Body",
                     "inputType": "stringOrExpression",
                     "defaultValue": "${payload}",
                     "required": "false",
-                    "helpTip": ""
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "JSON"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyXml",
+                    "displayName": "Request Body",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "${xpath('$body/node()')}",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "XML"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyText",
+                    "displayName": "Request Body",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "${xpath('$body/node()')}",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "TEXT"
+                      }
+                    ]
                   }
                 }
               ]

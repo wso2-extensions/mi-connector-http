@@ -49,8 +49,10 @@ import static org.wso2.carbon.http.connector.Constants.HEADERS_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.JSON_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.JSON_TYPE;
 import static org.wso2.carbon.http.connector.Constants.RELATIVE_PATH_IDENTIFIER;
-import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_JSON_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_TEXT_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_TYPE_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.REQUEST_BODY_XML_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.SOAP11_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.SOAP12_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.TEXT_CONTENT_TYPE;
@@ -95,13 +97,34 @@ public class RestURLBuilder extends AbstractConnector {
                 this.headers;
         String requestBodyType = messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) != null ?
                 (String) messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) : this.requestBodyType;
-        String requestBody = messageContext.getProperty(REQUEST_BODY_IDENTIFIER) != null ?
-                (String) messageContext.getProperty(REQUEST_BODY_IDENTIFIER) : this.requestBody;
+        String requestBody = getRequestBody(messageContext);
 
         handleInputHeaders(messageContext, headers);
-        requestBody = getProcessedRequestBody(requestBodyType, requestBody);
         handlePayload(messageContext, requestBodyType, requestBody);
         resolveRelativePath(messageContext, relativePath);
+    }
+
+    /**
+     * Gets the request body from input request bodies.
+     *
+     * @param messageContext the message context
+     * @return the request body
+     */
+    private String getRequestBody(MessageContext messageContext) {
+
+        String requestBodyJson = (String) messageContext.getProperty(REQUEST_BODY_JSON_IDENTIFIER);
+        String requestBodyXml = (String) messageContext.getProperty(REQUEST_BODY_XML_IDENTIFIER);
+        String requestBodyText = (String) messageContext.getProperty(REQUEST_BODY_TEXT_IDENTIFIER);
+
+        if (StringUtils.isNotEmpty(requestBodyJson)) {
+            return getProcessedJsonRequestBody(requestBodyJson);
+        } else if (StringUtils.isNotEmpty(requestBodyXml)) {
+            return requestBodyXml;
+        } else if (StringUtils.isNotEmpty(requestBodyText)) {
+            return requestBodyText;
+        } else {
+            return StringUtils.EMPTY;
+        }
     }
 
     /**
@@ -160,18 +183,15 @@ public class RestURLBuilder extends AbstractConnector {
     }
 
     /**
-     * Processes the request body by removing surrounding single quotes if the type is JSON.
+     * Processes the json request body by removing surrounding single quotes
      *
-     * @param requestBodyType the type of the request body
-     * @param requestBody the request body
-     * @return the processed request body
+     * @param requestBody
+     * @return
      */
-    private String getProcessedRequestBody(String requestBodyType, String requestBody) {
+    private String getProcessedJsonRequestBody(String requestBody) {
 
-        if (requestBodyType.equals(JSON_TYPE)) {
-            if (requestBody.startsWith(Constants.SINGLE_QUOTE) && requestBody.endsWith(Constants.SINGLE_QUOTE)) {
-                return requestBody.substring(1, requestBody.length() - 1);
-            }
+        if (requestBody.startsWith(Constants.SINGLE_QUOTE) && requestBody.endsWith(Constants.SINGLE_QUOTE)) {
+            return requestBody.substring(1, requestBody.length() - 1);
         }
         return requestBody;
     }

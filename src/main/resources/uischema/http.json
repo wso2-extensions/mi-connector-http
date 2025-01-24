@@ -287,107 +287,136 @@
               "isCollapsed": "true",
               "elements": [
                 {
-                  "type": "attribute",
+                  "type": "attributeGroup",
                   "value": {
-                    "name": "timeoutDuration",
-                    "displayName": "Timeout Duration",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
+                    "groupName": "Timeout Properties",
+                    "isCollapsed": "true",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "timeoutDuration",
+                          "displayName": "Time to wait for a response (in milliseconds)",
+                          "inputType": "string",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": ""
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "timeoutAction",
+                          "displayName": "Action to perform when response comes to a timeout endpoint",
+                          "inputType": "combo",
+                          "defaultValue": "Never",
+                          "required": "false",
+                          "comboValues": [
+                            "Never",
+                            "Discard",
+                            "Fault"
+                          ],
+                          "helpTip": "Never: No action performed, Discard: Discard the callback, Fault: Discard the callback and execute defined fault sequence"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "retryErrorCodes",
+                          "displayName": "Error codes which put the connection into timeout mode immediately",
+                          "inputType": "string",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Provide a comma separated error codes list",
+                          "placeholder": "500, 501"
+                        }
+                      }
+                    ]
                   }
                 },
                 {
-                  "type": "attribute",
+                  "type": "attributeGroup",
                   "value": {
-                    "name": "timeoutAction",
-                    "displayName": "Timeout Action",
-                    "inputType": "combo",
-                    "defaultValue": "Never",
-                    "required": "false",
-                    "comboValues": [
-                      "Never",
-                      "Discard",
-                      "Fault"
-                    ],
-                    "helpTip": ""
+                    "groupName": "Before Suspend Retry Properties",
+                    "isCollapsed": "true",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "retryCount",
+                          "displayName": "No of retry counts for a timeout connection before suspending",
+                          "inputType": "string",
+                          "defaultValue": "0",
+                          "required": "false",
+                          "helpTip": ""
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "retryDelay",
+                          "displayName": "Delay between retries for a timeout connection (in milliseconds)",
+                          "inputType": "string",
+                          "defaultValue": "0",
+                          "required": "false",
+                          "helpTip": "The time to wait between the last retry attempt and the next retry."
+                        }
+                      }
+                    ]
                   }
                 },
                 {
-                  "type": "attribute",
+                  "type": "attributeGroup",
                   "value": {
-                    "name": "suspendErrorCodes",
-                    "displayName": "Suspend Error Codes",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "suspendInitialDuration",
-                    "displayName": "Suspend Initial Duration",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "suspendMaximumDuration",
-                    "displayName": "Suspend Maximum Duration",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "suspendProgressionFactor",
-                    "displayName": "Suspend Progression Factor",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "retryErrorCodes",
-                    "displayName": "Retry Error Codes",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "retryCount",
-                    "displayName": "Retry Count",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "retryDelay",
-                    "displayName": "Retry Delay",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": ""
+                    "groupName": "Suspend Properties",
+                    "isCollapsed": "true",
+                    "elements": [
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "suspendErrorCodes",
+                          "displayName": "Error codes which immediately put the connection into suspend mode immediately",
+                          "inputType": "string",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Provide a comma separated error codes list",
+                          "placeholder": "403, 404"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "suspendInitialDuration",
+                          "displayName": "Initial suspend duration when the connection is inactive (in milliseconds)",
+                          "inputType": "string",
+                          "defaultValue": "-1",
+                          "required": "false",
+                          "helpTip": "The initial suspend duration when the connection is marked as inactive"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "suspendProgressionFactor",
+                          "displayName": "Suspend duration ratio to get the next suspend duration",
+                          "inputType": "string",
+                          "defaultValue": "1",
+                          "required": "false",
+                          "helpTip": "Next suspend duration = Previous suspend duration * Suspend duration ratio"
+                        }
+                      },
+                      {
+                        "type": "attribute",
+                        "value": {
+                          "name": "suspendMaximumDuration",
+                          "displayName": "Maximum suspend duration for the connection (in milliseconds)",
+                          "inputType": "string",
+                          "defaultValue": "",
+                          "required": "false",
+                          "helpTip": "Suspend duration = the minimum of maximum suspend duration and calculated suspend duration"
+                        }
+                      }
+                    ]
                   }
                 }
               ]

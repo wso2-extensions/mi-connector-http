@@ -1,6 +1,6 @@
 {
   "connectorName": "http",
-  "connectionName": "https",
+  "connectionName": "HTTPS",
   "title": "HTTPS Connection",
   "help": "<h1>HTTPS Connection</h1> <b>The HTTP Connector allows you to send a https request.</b>",
   "elements": [

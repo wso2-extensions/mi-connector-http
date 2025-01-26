@@ -1,6 +1,6 @@
 {
   "connectorName": "http",
-  "connectionName": "http",
+  "connectionName": "HTTP",
   "title": "HTTP Connection",
   "help": "<h1>HTTP Connection</h1> <b>The HTTP Connector allows you to send a http request.</b>",
   "elements": [

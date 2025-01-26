@@ -16,8 +16,8 @@
               "displayName": "Connection",
               "inputType": "connection",
               "allowedConnectionTypes": [
-                "http",
-                "https"
+                "HTTP",
+                "HTTPS"
               ],
               "defaultType": "connection.http",
               "defaultValue": "",

@@ -97,30 +97,6 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "basicCredentialsUsername",
-                    "displayName": "Username",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "Enter Username",
-                    "enableCondition": [{"authType": "Basic Auth"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "basicCredentialsPassword",
-                    "displayName": "Password",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "Enter Password",
-                    "enableCondition": [{"authType": "Basic Auth"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
                     "name": "oauthAuthorizationMode",
                     "displayName": "OAuth Authorization Mode",
                     "inputType": "combo",
@@ -152,91 +128,73 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "oauthClientClientId",
+                    "name": "username",
+                    "displayName": "Username",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Enter Username",
+                    "enableCondition": ["OR",
+                      {"authType": "Basic Auth"},
+                      ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "password",
+                    "displayName": "Password",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Enter Password",
+                    "enableCondition": ["OR",
+                      {"authType": "Basic Auth"},
+                      ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "clientId",
                     "displayName": "Client Id",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                    "enableCondition": [{"authType": "OAuth"}]
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "oauthClientClientSecret",
+                    "name": "clientSecret",
                     "displayName": "Client Secret",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                    "enableCondition": [{"authType": "OAuth"}]
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "oauthClientTokenUrl",
+                    "name": "tokenUrl",
                     "displayName": "Token URL",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
+                    "enableCondition": [{"authType": "OAuth"}]
                   }
                 },
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "oauthClientAdditionalProperties",
-                    "displayName": "Additional Properties",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Client Credentials"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthAuthorizationClientId",
-                    "displayName": "Client Id",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthAuthorizationClientSecret",
-                    "displayName": "Client Secret",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthAuthorizationTokenUrl",
-                    "displayName": "Token URL",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthAuthorizationRefreshToken",
+                    "name": "refreshToken",
                     "displayName": "Refresh Token",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
@@ -248,85 +206,13 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "oauthAuthorizationAdditionalProperties",
+                    "name": "additionalProperties",
                     "displayName": "Additional Properties",
                     "inputType": "string",
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Authorization Code"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordClientId",
-                    "displayName": "Client Id",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordClientSecret",
-                    "displayName": "Client Secret",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordTokenUrl",
-                    "displayName": "Token URL",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordUsername",
-                    "displayName": "Username",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordPassword",
-                    "displayName": "Password",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "oauthPasswordAdditionalProperties",
-                    "displayName": "Additional Properties",
-                    "inputType": "string",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "",
-                    "enableCondition": ["AND", {"authType": "OAuth"}, {"oauthGrantType": "Password"}]
+                    "enableCondition": [{"authType": "OAuth"}]
                   }
                 }
               ]

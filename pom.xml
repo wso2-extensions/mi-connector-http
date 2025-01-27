@@ -21,7 +21,7 @@
 
   <groupId>org.wso2.integration.connector</groupId>
   <artifactId>mi-connector-http</artifactId>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.1.2-SNAPSHOT</version>
 
   <name>WSO2 Carbon - HTTP Connector</name>
   <url>http://wso2.org</url>
@@ -30,7 +30,7 @@
 
   <properties>
     <connector.name>http</connector.name>
-    <synapse.version>4.0.0-wso2v161</synapse.version>
+    <synapse.version>4.0.0-wso2v186</synapse.version>
     <axiom.version>1.2.11-wso2v21</axiom.version>
     <carbon.mediation.version>4.7.160</carbon.mediation.version>
   </properties>

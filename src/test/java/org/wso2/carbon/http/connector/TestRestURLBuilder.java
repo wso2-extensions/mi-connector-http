@@ -48,7 +48,7 @@ public class TestRestURLBuilder {
     @Test
     public void testProcessUrlPath() throws AxisFault {
 
-        String relativePath = "/books/${var.id}/author/${var.name}";
+        String relativePath = "/books/${vars.id}/author/${vars.name}";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
         MessageContext messageContext = createMessageContext();
         messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
@@ -62,7 +62,7 @@ public class TestRestURLBuilder {
     @Test
     public void testUrlWithoutPathParameters() throws AxisFault {
 
-        String relativePath = "/books/${var.id}";
+        String relativePath = "/books/${vars.id}";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
         MessageContext messageContext = createMessageContext();
         messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);

@@ -29,9 +29,9 @@ public class Constants {
     public static final String REQUEST_BODY_XML_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_XML";
     public static final String REQUEST_BODY_TEXT_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_TEXT";
     public static final QName TEXT_ELEMENT = new QName("http://ws.apache.org/commons/ns/payload", "text");
-    public static final String JSON_TYPE = "json";
-    public static final String XML_TYPE = "xml";
-    public static final String TEXT_TYPE = "text";
+    public static final String JSON_TYPE = "JSON";
+    public static final String XML_TYPE = "XML";
+    public static final String TEXT_TYPE = "TEXT";
     public static final String URL_PATH = "uri.var.path";
     public static final String SINGLE_QUOTE = "\'";
     public static final String XML_CONTENT_TYPE = "application/xml";
@@ -39,4 +39,5 @@ public class Constants {
     public static final String TEXT_CONTENT_TYPE = "text/plain";
     public static final String SOAP11_CONTENT_TYPE = "text/xml";
     public static final String SOAP12_CONTENT_TYPE = "application/soap+xml";
+    public static final String EMPTY_LIST = "[]";
 }

@@ -64,17 +64,7 @@ public class RestURLBuilder extends AbstractConnector {
 
     private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 
-    private String relativePath;
-    private String headers;
-    private String requestBodyType;
-    private String requestBody;
-
     public RestURLBuilder() {
-
-        relativePath = "";
-        headers = "[]";
-        requestBodyType = "";
-        requestBody = "";
 
         xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
@@ -91,12 +81,11 @@ public class RestURLBuilder extends AbstractConnector {
     public void connect(MessageContext messageContext) {
 
         String relativePath = messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) != null ?
-                (String) messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) : this.relativePath;
+                (String) messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) : StringUtils.EMPTY;
         String headers = messageContext.getProperty(HEADERS_IDENTIFIER) != null ? (String) messageContext.getProperty(
-                HEADERS_IDENTIFIER) :
-                this.headers;
+                HEADERS_IDENTIFIER) : Constants.EMPTY_LIST;
         String requestBodyType = messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) != null ?
-                (String) messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) : this.requestBodyType;
+                (String) messageContext.getProperty(REQUEST_BODY_TYPE_IDENTIFIER) : StringUtils.EMPTY;
         String requestBody = getRequestBody(messageContext);
 
         handleInputHeaders(messageContext, headers);
@@ -155,7 +144,7 @@ public class RestURLBuilder extends AbstractConnector {
 
         if (StringUtils.isNotEmpty(requestBody) && StringUtils.isNotEmpty(requestBodyType)) {
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext)messageContext).getAxis2MessageContext();
-            if (requestBodyType.equalsIgnoreCase(XML_TYPE)) {
+            if (requestBodyType.equals(XML_TYPE)) {
                 try {
                     requestBody = "<pfPadding>" + requestBody + "</pfPadding>";
                     JsonUtil.removeJsonPayload(axis2MessageContext);
@@ -168,17 +157,17 @@ public class RestURLBuilder extends AbstractConnector {
                 } catch (XMLStreamException var9) {
                     this.handleException("Error creating SOAP Envelope from source " + requestBody, messageContext);
                 }
-            } else if (requestBodyType.equalsIgnoreCase(JSON_TYPE)) {
+            } else if (requestBodyType.equals(JSON_TYPE)) {
                 try {
                     JsonUtil.getNewJsonPayload(axis2MessageContext, requestBody, true, true);
                 } catch (AxisFault var8) {
                     this.handleException("Error creating JSON Payload from source " + requestBody, messageContext);
                 }
-            } else if (requestBodyType.equalsIgnoreCase(TEXT_TYPE)) {
+            } else if (requestBodyType.equals(TEXT_TYPE)) {
                 JsonUtil.removeJsonPayload(axis2MessageContext);
                 axis2MessageContext.getEnvelope().getBody().addChild(Utils.getTextElement(requestBody));
             }
-            setContentType(messageContext);
+            setContentType(messageContext, requestBodyType);
         }
     }
 
@@ -200,8 +189,9 @@ public class RestURLBuilder extends AbstractConnector {
      * Sets the content type of the message context based on the request body type.
      *
      * @param synCtx the message context
+     * @param requestBodyType the type of the request body
      */
-    private void setContentType(MessageContext synCtx) {
+    private void setContentType(MessageContext synCtx, String requestBodyType) {
 
         org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) synCtx).getAxis2MessageContext();
         if (requestBodyType.equals(XML_TYPE)) {

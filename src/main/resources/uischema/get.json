@@ -39,7 +39,7 @@
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "Enter the relative path for the specific API endpoint, appended to the base URL.",
-                    "matchPattern": "([^?&=]+)=([^&]+)",
+                    "separatorPattern": "([^?&=]+)=([^&]+)",
                     "initialSeparator": "?",
                     "secondarySeparator": "&",
                     "keyValueSeparator": "="

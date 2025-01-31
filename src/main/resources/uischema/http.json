@@ -14,7 +14,7 @@
             "value": {
               "name": "baseUrl",
               "displayName": "Base URL",
-              "inputType": "string",
+              "inputType": "stringOrExpression",
               "defaultValue": "http://",
               "required": "true",
               "helpTip": "Enter the base URL of the service, which serves as the root endpoint for all API requests."

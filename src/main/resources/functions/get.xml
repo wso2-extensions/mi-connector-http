@@ -36,6 +36,8 @@
     <parameter name="forcePostPutNobody" description=""/>
     <parameter name="forceHttpContentLength" description=""/>
     <parameter name="copyContentLengthFromIncoming" description=""/>
+    <parameter name="responseVariable" description="The name of the variable to which the response should be stored."/>
+    <parameter name="overwriteBody" description="Replace the Message Body in Message Context with the response of the operation."/>
     <sequence>
         <property name="HTTP_CONN_RELATIVE_PATH" expression="$func:relativePath"/>
         <property name="HTTP_CONN_HEADERS" expression="$func:headers"/>

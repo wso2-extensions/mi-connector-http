@@ -83,7 +83,7 @@
                     "name": "requestBodyType",
                     "displayName": "Content Type",
                     "inputType": "combo",
-                    "defaultValue": "TEXT",
+                    "defaultValue": "JSON",
                     "required": "false",
                     "comboValues": [
                       "JSON",

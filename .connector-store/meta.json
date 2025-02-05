@@ -12,6 +12,65 @@
     "type": "Connector",
     "releases": [
         {
+            "tagName": "v0.1.4",
+            "products": [
+                "MI 4.4.0"
+            ],
+            "operations": [
+                {
+                    "name":"init",
+                    "description":"Config operation",
+                    "isHidden":true
+                },
+                {
+                    "name":"get",
+                    "description":"Send an HTTP GET request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"delete",
+                    "description":"Send an HTTP DELETE request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"post",
+                    "description":"Send an HTTP POST request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"put",
+                    "description":"Send an HTTP PUT request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"patch",
+                    "description":"Send an HTTP PATCH request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"head",
+                    "description":"Send an HTTP HEAD request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"options",
+                    "description":"Send an HTTP OPTIONS request.",
+                    "isHidden":false
+                }
+            ],
+            "connections": [
+                {
+                    "name": "HTTP",
+                    "description": "Connection for interacting with HTTP endpoints."
+                },
+                {
+                    "name": "HTTPS",
+                    "description": "Connection for interacting with HTTPS endpoints."
+                }
+            ],
+            "isHidden": false
+        },
+        {
             "tagName": "v0.1.3",
             "products": [
                 "MI 4.4.0"

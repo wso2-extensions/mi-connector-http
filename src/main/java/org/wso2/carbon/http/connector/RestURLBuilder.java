@@ -128,7 +128,7 @@ public class RestURLBuilder extends AbstractConnector {
             relativePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, relativePath);
             messageContext.setProperty(Constants.URL_PATH, relativePath);
         } catch (JaxenException e) {
-            throw new RuntimeException(e);
+            handleException("Error while processing relative path: " + relativePath, e, messageContext);
         }
     }
 

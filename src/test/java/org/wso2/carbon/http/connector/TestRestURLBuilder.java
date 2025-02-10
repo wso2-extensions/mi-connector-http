@@ -42,8 +42,8 @@ import javax.xml.stream.XMLStreamException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
 public class TestRestURLBuilder {
 
@@ -98,7 +98,7 @@ public class TestRestURLBuilder {
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
-        assertTrue(transportHeaders == null);
+        assertNull(transportHeaders);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class TestRestURLBuilder {
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
-        assertTrue(transportHeaders == null);
+        assertNull(transportHeaders);
     }
 
     @Test
@@ -294,7 +294,7 @@ public class TestRestURLBuilder {
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         OMElement bodyElement = axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement();
-        assertEquals(null, bodyElement);
+        assertNull(bodyElement);
     }
 
     @Test

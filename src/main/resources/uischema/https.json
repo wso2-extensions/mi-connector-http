@@ -28,45 +28,13 @@
               "elements": [
                 {
                   "type": "attribute",
-                    "value": {
-                      "name": "certificateType",
-                      "displayName": "Certificate Type",
-                      "inputType": "combo",
-                      "defaultValue": "File",
-                      "comboValues": [
-                        "File",
-                        "Configurable"
-                      ],
-                      "required": "false",
-                      "helpTip": "Select Certificate Input Type."
-                    }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "trustStoreCertificatePath",
-                    "displayName": "Certificate File",
-                    "inputType": "resource",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Select certificate file.",
-                    "enableCondition": [{"certificateType": "File"}],
-                    "keyType": "crt",
-                    "canAddNew": true
-                  }
-                },
-                {
-                  "type": "attribute",
                   "value": {
                     "name": "certificateConfigurable",
                     "displayName": "Certificate Configurable",
-                    "inputType": "expression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "Select certificate configurable.",
-                    "enableCondition": [{"certificateType": "Configurable"}],
-                    "keyType": "configurable",
-                    "configurableType": "cert"
+                    "inputType": "popUp",
+                    "helpTip": "Certificates are managed as configurables for the project. To add a certificate as a configurable, navigate to the Configurables section on the Project Overview page.",
+                    "viewIdentifier": "manageConfigurables",
+                    "viewDisplayName": "Manage Configurables"
                   }
                 }
               ]

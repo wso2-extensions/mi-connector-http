@@ -129,28 +129,6 @@
                     "required": "false",
                     "helpTip": "Disable HTTP keep-alive for outgoing requests."
                   }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "forcePostPutNobody",
-                    "displayName": "Force no body for POST/PUT methods",
-                    "inputType": "checkbox",
-                    "defaultValue": false,
-                    "required": "false",
-                    "helpTip": "Allow sending a request without a body for POST and PUT HTTP methods. Applicable only for HTTP PassThrough transport."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "forceHttpContentLength",
-                    "displayName": "Force HTTP Content Length",
-                    "inputType": "checkbox",
-                    "defaultValue": false,
-                    "required": "false",
-                    "helpTip": "Send the request with content length (no chunking) when 'Content-Length' is present in the client request."
-                  }
                 }
               ]
             }

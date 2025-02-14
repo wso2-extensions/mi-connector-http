@@ -21,7 +21,7 @@
 
   <groupId>org.wso2.integration.connector</groupId>
   <artifactId>mi-connector-http</artifactId>
-  <version>0.1.6</version>
+  <version>0.1.7-SNAPSHOT</version>
 
   <name>WSO2 Carbon - HTTP Connector</name>
   <url>http://wso2.org</url>
@@ -67,7 +67,7 @@
     <connection>scm:git:https://github.com/wso2-extensions/mi-connector-http.git</connection>
     <url>https://github.com/wso2-extensions/mi-connector-http.git</url>
     <developerConnection>scm:git:https://github.com/wso2-extensions/mi-connector-http</developerConnection>
-    <tag>v0.1.6</tag>
+    <tag>HEAD</tag>
   </scm>
   <build>
     <plugins>

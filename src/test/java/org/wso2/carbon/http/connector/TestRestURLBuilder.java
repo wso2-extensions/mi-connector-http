@@ -135,6 +135,52 @@ public class TestRestURLBuilder {
     }
 
     @Test
+    public void testProcessEmptyJsonRequestBody() throws AxisFault {
+
+        String expectedBody = "<jsonObject />";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "JSON");
+        messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody);
+        assertEquals(Constants.JSON_CONTENT_TYPE, contentType);
+        assertEquals(Constants.JSON_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testPayloadUpdateWithJsonRequestBody() throws AxisFault {
+
+        String expectedBody = "<jsonObject />";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "JSON");
+
+        // set initial json payload
+        messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "{\"user\": \"John\"}");
+        restURLBuilder.connect(messageContext);
+        // update json payload
+        messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "");
+        restURLBuilder.connect(messageContext);
+
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody);
+        assertEquals(Constants.JSON_CONTENT_TYPE, contentType);
+        assertEquals(Constants.JSON_CONTENT_TYPE, messageType);
+    }
+
+    @Test
     public void testProcessJsonRequestBodyWithoutHeaders() throws AxisFault {
 
         String expectedBody = "<jsonObject><id>7</id><name>Peoples</name></jsonObject>";
@@ -176,6 +222,52 @@ public class TestRestURLBuilder {
     }
 
     @Test
+    public void testProcessEmptyXmlRequestBody() throws AxisFault, XMLStreamException {
+
+        String expectedBody = "<root />";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "XML");
+        messageContext.setProperty(Constants.REQUEST_BODY_XML_IDENTIFIER, "<root />");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody);
+        assertEquals(Constants.XML_CONTENT_TYPE, contentType);
+        assertEquals(Constants.XML_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testUpdatePayloadWithXmlRequestBody() throws AxisFault, XMLStreamException {
+
+        String expectedBody = "<root />";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "XML");
+
+        // set xml payload
+        messageContext.setProperty(Constants.REQUEST_BODY_XML_IDENTIFIER, "<bank><id>7</id><name>Peoples</name></bank>");
+        restURLBuilder.connect(messageContext);
+        // update xml payload
+        messageContext.setProperty(Constants.REQUEST_BODY_XML_IDENTIFIER, "<root />");
+        restURLBuilder.connect(messageContext);
+
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody);
+        assertEquals(Constants.XML_CONTENT_TYPE, contentType);
+        assertEquals(Constants.XML_CONTENT_TYPE, messageType);
+    }
+
+    @Test
     public void testProcessXmlRequestBodyWithoutHeaders() throws AxisFault {
 
         String expectedBody = "<bank><id>7</id><name>Peoples</name></bank>";
@@ -205,6 +297,53 @@ public class TestRestURLBuilder {
         messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "TEXT");
         messageContext.setProperty(Constants.REQUEST_BODY_TEXT_IDENTIFIER, "7");
         restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody.replaceAll("axis2ns\\d+", "axis2ns"));
+        assertEquals(Constants.TEXT_CONTENT_TYPE, contentType);
+        assertEquals(Constants.TEXT_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testProcessEmptyTextRequestBody() throws AxisFault, XMLStreamException {
+
+        String expectedBody = "<axis2ns:text xmlns:axis2ns=\"http://ws.apache.org/commons/ns/payload\"></axis2ns:text>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "TEXT");
+        messageContext.setProperty(Constants.REQUEST_BODY_TEXT_IDENTIFIER, "");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody.replaceAll("axis2ns\\d+", "axis2ns"));
+        assertEquals(Constants.TEXT_CONTENT_TYPE, contentType);
+        assertEquals(Constants.TEXT_CONTENT_TYPE, messageType);
+    }
+
+
+    @Test
+    public void testUpdatePayloadWithTextRequestBody() throws AxisFault, XMLStreamException {
+
+        String expectedBody = "<axis2ns:text xmlns:axis2ns=\"http://ws.apache.org/commons/ns/payload\"></axis2ns:text>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "TEXT");
+
+        // set text payload
+        messageContext.setProperty(Constants.REQUEST_BODY_TEXT_IDENTIFIER, "7");
+        restURLBuilder.connect(messageContext);
+        // update text payload
+        messageContext.setProperty(Constants.REQUEST_BODY_TEXT_IDENTIFIER, "");
+        restURLBuilder.connect(messageContext);
+
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
         Object contentType = a2mc.getProperty("ContentType");

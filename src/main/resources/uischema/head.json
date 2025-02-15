@@ -116,7 +116,7 @@
                     "displayName": "Request Body",
                     "inputType": "stringOrExpression",
                     "defaultValue": "${xpath('$body/node()')}",
-                    "required": "false",
+                    "required": "true",
                     "helpTip": "",
                     "enableCondition": [
                       {

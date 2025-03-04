@@ -142,7 +142,7 @@ public class RestURLBuilder extends AbstractConnector {
      */
     private void handlePayload(MessageContext messageContext, String requestBodyType, String requestBody) {
 
-        if (StringUtils.isNotEmpty(requestBody) && StringUtils.isNotEmpty(requestBodyType)) {
+        if (StringUtils.isNotEmpty(requestBodyType)) {
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext)messageContext).getAxis2MessageContext();
             if (requestBodyType.equals(XML_TYPE)) {
                 try {

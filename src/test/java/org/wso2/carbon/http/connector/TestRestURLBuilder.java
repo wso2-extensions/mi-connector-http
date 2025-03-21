@@ -19,8 +19,13 @@
 package org.wso2.carbon.http.connector;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
@@ -36,9 +41,11 @@ import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.core.axis2.Axis2SynapseEnvironment;
 import org.junit.Test;
 
+import java.io.StringReader;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -122,6 +129,51 @@ public class TestRestURLBuilder {
         messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \"application/json\"]]");
         messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "JSON");
         messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "{\"id\": 7, \"name\": \"Peoples\"}");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody);
+        assertEquals(Constants.JSON_CONTENT_TYPE, contentType);
+        assertEquals(Constants.JSON_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testProcessJsonRequestBodyWithInlineExpression() throws AxisFault, XMLStreamException {
+
+        String payload = "<jsonObject><id>7</id><name>Peoples</name></jsonObject>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setEnvelope(createEnvelopeWithBody(payload));
+        messageContext.setProperty("payload", "{\"id\": 7, \"name\": \"Peoples\"}");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "JSON");
+        messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "${payload}");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody =
+                axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(payload, actualBody);
+        assertEquals(Constants.JSON_CONTENT_TYPE, contentType);
+        assertEquals(Constants.JSON_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testProcessJsonRequestBodyWithAdvanceInlineExpression() throws AxisFault, XMLStreamException {
+
+        String payload = "<jsonObject><id>7</id><name>Jeewan</name></jsonObject>";
+        String expectedBody = "<jsonObject><id>7</id><firstName>Jeewan</firstName></jsonObject>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setEnvelope(createEnvelopeWithBody(payload));
+        messageContext.setProperty("payload", "{\"id\": 7, \"name\": \"Peoples\"}");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "JSON");
+        messageContext.setProperty(Constants.REQUEST_BODY_JSON_IDENTIFIER, "{\"id\": ${payload.id}, \"firstName\": \"${payload.name}\"}");
         restURLBuilder.connect(messageContext);
         Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
         org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
@@ -222,6 +274,27 @@ public class TestRestURLBuilder {
     }
 
     @Test
+    public void testProcessXmlRequestBodyWithInlineExpression() throws AxisFault, XMLStreamException {
+
+        String payload = "<bank><id>7</id><name>Peoples</name></bank>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setEnvelope(createEnvelopeWithBody(payload));
+        messageContext.setProperty("payload", "<bank><id>7</id><name>Peoples</name></bank>");
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "XML");
+        messageContext.setProperty(Constants.REQUEST_BODY_XML_IDENTIFIER, "${xpath('$body/node()')}");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody = axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(payload, actualBody);
+        assertEquals(Constants.XML_CONTENT_TYPE, contentType);
+        assertEquals(Constants.XML_CONTENT_TYPE, messageType);
+    }
+
+    @Test
     public void testProcessEmptyXmlRequestBody() throws AxisFault, XMLStreamException {
 
         String expectedBody = "<root />";
@@ -303,6 +376,27 @@ public class TestRestURLBuilder {
         Object messageType = a2mc.getProperty("messageType");
         String actualBody =
                 axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
+        assertEquals(expectedBody, actualBody.replaceAll("axis2ns\\d+", "axis2ns"));
+        assertEquals(Constants.TEXT_CONTENT_TYPE, contentType);
+        assertEquals(Constants.TEXT_CONTENT_TYPE, messageType);
+    }
+
+    @Test
+    public void testProcessTextRequestBodyWithInlineExpression() throws AxisFault, XMLStreamException {
+
+        String payload = "<text>7</text>";
+        String expectedBody = "<axis2ns:text xmlns:axis2ns=\"http://ws.apache.org/commons/ns/payload\">&lt;text>7&lt;/text></axis2ns:text>";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setEnvelope(createEnvelopeWithBody(payload));
+        messageContext.setProperty(Constants.REQUEST_BODY_TYPE_IDENTIFIER, "TEXT");
+        messageContext.setProperty(Constants.REQUEST_BODY_TEXT_IDENTIFIER, "${xpath('$body/node()')}");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        org.apache.axis2.context.MessageContext a2mc = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        Object contentType = a2mc.getProperty("ContentType");
+        Object messageType = a2mc.getProperty("messageType");
+        String actualBody = axis2MessageContext.getAxis2MessageContext().getEnvelope().getBody().getFirstElement().toString();
         assertEquals(expectedBody, actualBody.replaceAll("axis2ns\\d+", "axis2ns"));
         assertEquals(Constants.TEXT_CONTENT_TYPE, contentType);
         assertEquals(Constants.TEXT_CONTENT_TYPE, messageType);
@@ -474,5 +568,21 @@ public class TestRestURLBuilder {
         mc.setEnvelope(OMAbstractFactory.getSOAP12Factory().createSOAPEnvelope());
         mc.getEnvelope().addChild(OMAbstractFactory.getSOAP12Factory().createSOAPBody());
         return mc;
+    }
+
+    private SOAPEnvelope createEnvelopeWithBody(String bodyStr) throws XMLStreamException {
+
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(bodyStr));
+
+        SOAPEnvelope envelope;
+        envelope = OMAbstractFactory.getSOAP12Factory().getDefaultEnvelope();
+        OMDocument omDoc = OMAbstractFactory.getSOAP12Factory().createOMDocument();
+        omDoc.addChild(envelope);
+
+        SOAPBody body = envelope.getBody();
+        StAXOMBuilder builder = new StAXOMBuilder(parser);
+        OMElement bodyElement = builder.getDocumentElement();
+        body.addChild(bodyElement);
+        return envelope;
     }
 }

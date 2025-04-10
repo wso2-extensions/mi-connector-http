@@ -144,6 +144,11 @@ public class RestURLBuilder extends AbstractConnector {
 
         if (StringUtils.isNotEmpty(requestBodyType)) {
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext)messageContext).getAxis2MessageContext();
+            try {
+                requestBody = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, requestBody);
+            } catch (JaxenException e) {
+                handleException("Error while processing request body", messageContext);
+            }
             if (requestBodyType.equals(XML_TYPE)) {
                 try {
                     requestBody = "<pfPadding>" + requestBody + "</pfPadding>";
@@ -155,13 +160,13 @@ public class RestURLBuilder extends AbstractConnector {
                         axis2MessageContext.getEnvelope().getBody().addChild(omXML.getFirstElement());
                     }
                 } catch (XMLStreamException var9) {
-                    this.handleException("Error creating SOAP Envelope from source " + requestBody, messageContext);
+                    handleException("Error creating SOAP Envelope from source " + requestBody, messageContext);
                 }
             } else if (requestBodyType.equals(JSON_TYPE)) {
                 try {
                     JsonUtil.getNewJsonPayload(axis2MessageContext, requestBody, true, true);
                 } catch (AxisFault var8) {
-                    this.handleException("Error creating JSON Payload from source " + requestBody, messageContext);
+                    handleException("Error creating JSON Payload from source " + requestBody, messageContext);
                 }
             } else if (requestBodyType.equals(TEXT_TYPE)) {
                 JsonUtil.removeJsonPayload(axis2MessageContext);

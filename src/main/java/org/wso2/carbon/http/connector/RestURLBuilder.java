@@ -35,6 +35,7 @@ import org.apache.synapse.util.AXIOMUtils;
 import org.apache.synapse.util.InlineExpressionUtil;
 import org.jaxen.JaxenException;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.core.AbstractConnector;
 
 import java.io.StringReader;
@@ -288,14 +289,30 @@ public class RestURLBuilder extends AbstractConnector {
                 if (headersArray.length() > 0) {
                     Utils.initializeTransportHeaders(messageContext);
                     Object transportHeaders = Utils.getTransportHeaders(messageContext);
-                    for (int i = 0; i < headersArray.length(); i++) {
-                        JSONArray headersItem = headersArray.getJSONArray(i);
-                        if (headersItem.length() == 2) {
-                            String headerName = headersItem.getString(0).trim();
-                            String headerValue = headersItem.getString(1).trim();
-                            if (transportHeaders instanceof Map) {
-                                Map transportHeadersMap = (Map) transportHeaders;
-                                transportHeadersMap.put(headerName, headerValue);
+                    if (transportHeaders instanceof Map) {
+                        Map transportHeadersMap = (Map) transportHeaders;
+                        for (int i = 0; i < headersArray.length(); i++) {
+                            Object headersItem = headersArray.get(i);
+                            if (headersItem instanceof JSONArray) {
+                                JSONArray headersArrayItem = (JSONArray) headersItem;
+                                if (headersArrayItem.length() == 2) {
+                                    String headerName = headersArrayItem.getString(0).trim();
+                                    String headerValue = headersArrayItem.getString(1).trim();
+                                    if (StringUtils.isNotEmpty(headerName)) {
+                                        transportHeadersMap.put(headerName, headerValue);
+                                    }
+                                }
+                            } else if (headersItem instanceof JSONObject) {
+                                JSONObject headersObjectItem = (JSONObject) headersItem;
+                                if (headersObjectItem.keys().hasNext()) {
+                                    String headerName = String.valueOf(headersObjectItem.keys().next());
+                                    String headerValue = headersObjectItem.getString(headerName);
+                                    String trimmedHeaderName = headerName.trim();
+                                    String trimmedHeaderValue = headerValue.trim();
+                                    if (StringUtils.isNotEmpty(trimmedHeaderName)) {
+                                        transportHeadersMap.put(trimmedHeaderName, trimmedHeaderValue);
+                                    }
+                                }
                             }
                         }
                     }

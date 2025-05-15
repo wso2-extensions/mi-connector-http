@@ -121,6 +121,85 @@ public class TestRestURLBuilder {
     }
 
     @Test
+    public void testAddNewFormatHeaders() throws AxisFault {
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[{\"Content-Type\": \"application/xml\"}, {\"Accept\": \"application/json\"}]");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+        assertNotNull(transportHeaders);
+        Map transportHeadersMap = (Map) transportHeaders;
+        String actualHeader1 = (String) transportHeadersMap.get("Content-Type");
+        String actualHeader2 = (String) transportHeadersMap.get("Accept");
+        assertEquals("application/xml", actualHeader1);
+        assertEquals("application/json", actualHeader2);
+    }
+
+    @Test
+    public void testAddHeadersWithAdditionalSpaces() throws AxisFault {
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[{\"Content-Type \": \" application/xml \"}, [\" Accept \", \" application/json \"]]");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+        assertNotNull(transportHeaders);
+        Map transportHeadersMap = (Map) transportHeaders;
+        String actualHeader1 = (String) transportHeadersMap.get("Content-Type");
+        String actualHeader2 = (String) transportHeadersMap.get("Accept");
+        assertEquals("application/xml", actualHeader1);
+        assertEquals("application/json", actualHeader2);
+    }
+
+    @Test
+    public void testAddHeadersWithEmptyKeys() throws AxisFault {
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"\", \"application/xml\"], {\"  \": \"application/json\"}]");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+        assertNotNull(transportHeaders);
+        Map transportHeadersMap = (Map) transportHeaders;
+        assertTrue(transportHeadersMap.isEmpty());
+    }
+
+    @Test
+    public void testAddHeadersWithEmptyValues() throws AxisFault {
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[\"Content-Type\", \" \"], {\"Accept\": \"\"}]");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+        assertNotNull(transportHeaders);
+        Map transportHeadersMap = (Map) transportHeaders;
+        String actualHeader1 = (String) transportHeadersMap.get("Content-Type");
+        String actualHeader2 = (String) transportHeadersMap.get("Accept");
+        assertEquals("", actualHeader1);
+        assertEquals("", actualHeader2);
+    }
+
+    @Test
+    public void testAddMultipleEmptyHeaders() throws AxisFault {
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.HEADERS_IDENTIFIER, "[[], {}]");
+        restURLBuilder.connect(messageContext);
+        Axis2MessageContext axis2MessageContext = (Axis2MessageContext) messageContext;
+        Object transportHeaders = axis2MessageContext.getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+        assertNotNull(transportHeaders);
+        Map transportHeadersMap = (Map) transportHeaders;
+        assertTrue(transportHeadersMap.isEmpty());
+    }
+
+    @Test
     public void testProcessJsonRequestBody() throws AxisFault {
 
         String expectedBody = "<jsonObject><id>7</id><name>Peoples</name></jsonObject>";

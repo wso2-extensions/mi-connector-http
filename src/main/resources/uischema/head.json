@@ -98,7 +98,7 @@
                   "value": {
                     "name": "requestBodyJson",
                     "displayName": "Request Body",
-                    "inputType": "stringOrExpression",
+                    "inputType": "expressionTextArea",
                     "defaultValue": "${payload}",
                     "required": "false",
                     "helpTip": "",
@@ -114,7 +114,7 @@
                   "value": {
                     "name": "requestBodyXml",
                     "displayName": "Request Body",
-                    "inputType": "stringOrExpression",
+                    "inputType": "expressionTextArea",
                     "defaultValue": "${xpath('$body/node()')}",
                     "required": "true",
                     "helpTip": "",
@@ -130,7 +130,7 @@
                   "value": {
                     "name": "requestBodyText",
                     "displayName": "Request Body",
-                    "inputType": "stringOrExpression",
+                    "inputType": "expressionTextArea",
                     "defaultValue": "${xpath('$body/node()')}",
                     "required": "false",
                     "helpTip": "",

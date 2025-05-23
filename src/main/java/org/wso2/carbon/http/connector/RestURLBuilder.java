@@ -46,6 +46,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import static org.wso2.carbon.http.connector.Constants.BASE_PATH_IDENTIFIER;
+import static org.wso2.carbon.http.connector.Constants.FORWARD_SLASH;
 import static org.wso2.carbon.http.connector.Constants.HEADERS_IDENTIFIER;
 import static org.wso2.carbon.http.connector.Constants.JSON_CONTENT_TYPE;
 import static org.wso2.carbon.http.connector.Constants.JSON_TYPE;
@@ -81,6 +83,8 @@ public class RestURLBuilder extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
 
+        String basePath = messageContext.getProperty(BASE_PATH_IDENTIFIER) != null ?
+                (String) messageContext.getProperty(BASE_PATH_IDENTIFIER) : StringUtils.EMPTY;
         String relativePath = messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) != null ?
                 (String) messageContext.getProperty(RELATIVE_PATH_IDENTIFIER) : StringUtils.EMPTY;
         String headers = messageContext.getProperty(HEADERS_IDENTIFIER) != null ? (String) messageContext.getProperty(
@@ -91,7 +95,7 @@ public class RestURLBuilder extends AbstractConnector {
 
         handleInputHeaders(messageContext, headers);
         handlePayload(messageContext, requestBodyType, requestBody);
-        resolveRelativePath(messageContext, relativePath);
+        processAndResolveUrl(messageContext, basePath, relativePath);
     }
 
     /**
@@ -118,16 +122,24 @@ public class RestURLBuilder extends AbstractConnector {
     }
 
     /**
+     * Processes the base path and relative path to resolve the URL.
      * Resolves the relative path using inline expression templates.
      *
      * @param messageContext the message context
+     * @param basePath the base path to be resolved
      * @param relativePath the relative path to be resolved
      */
-    private void resolveRelativePath(MessageContext messageContext, String relativePath) {
+    private void processAndResolveUrl(MessageContext messageContext, String basePath, String relativePath) {
 
         try {
-            relativePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, relativePath);
+            basePath = StringUtils.stripEnd(basePath.trim(), FORWARD_SLASH);
+            relativePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, relativePath).trim();
+            if (!relativePath.startsWith(FORWARD_SLASH)) {
+                relativePath = FORWARD_SLASH + relativePath;
+            }
+            messageContext.setProperty(Constants.URL_BASE, basePath);
             messageContext.setProperty(Constants.URL_PATH, relativePath);
+            messageContext.setProperty(Constants.URL_QUERY, StringUtils.EMPTY);
         } catch (JaxenException e) {
             handleException("Error while processing relative path: " + relativePath, e, messageContext);
         }

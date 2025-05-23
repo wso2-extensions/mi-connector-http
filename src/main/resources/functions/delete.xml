@@ -68,6 +68,7 @@
         <property name="uri.var.base" action="remove"/>
         <property name="uri.var.path" action="remove"/>
         <property name="uri.var.query" action="remove"/>
+        <property name="HTTP_CONN_BASE_PATH" action="remove"/>
         <property name="HTTP_CONN_RELATIVE_PATH" action="remove"/>
         <property name="HTTP_CONN_HEADERS" action="remove"/>
 

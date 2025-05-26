@@ -55,17 +55,41 @@ import static org.junit.Assert.assertTrue;
 public class TestRestURLBuilder {
 
     @Test
-    public void testProcessUrlPath() throws AxisFault {
+    public void testProcessUrl() throws AxisFault {
 
+        String basePath = "https://example.com";
         String relativePath = "/books/${vars.id}/author/${vars.name}";
         RestURLBuilder restURLBuilder = new RestURLBuilder();
         MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.BASE_PATH_IDENTIFIER, basePath);
         messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
         messageContext.setVariable("id", 1);
         messageContext.setVariable("name", "John");
         restURLBuilder.connect(messageContext);
-        String expectedUrlPath = (String) messageContext.getProperty(Constants.URL_PATH);
-        assertEquals(expectedUrlPath, "/books/1/author/John");
+        String actualBasePath = (String) messageContext.getProperty(Constants.URL_BASE);
+        String actualRelativePath = (String) messageContext.getProperty(Constants.URL_PATH);
+        String actualQuery = (String) messageContext.getProperty(Constants.URL_QUERY);
+        assertEquals("https://example.com", actualBasePath);
+        assertEquals("/books/1/author/John", actualRelativePath);
+        assertEquals("", actualQuery);
+    }
+
+    @Test
+    public void testProcessUrlBasePathRelativePathConcatenation() throws AxisFault {
+        String basePath = "https://example.com/api/";
+        String relativePath = "/v1/resources/${vars.resourceId}";
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        MessageContext messageContext = createMessageContext();
+        messageContext.setProperty(Constants.BASE_PATH_IDENTIFIER, basePath);
+        messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
+        messageContext.setVariable("resourceId", 42);
+        restURLBuilder.connect(messageContext);
+        String actualBasePath = (String) messageContext.getProperty(Constants.URL_BASE);
+        String actualRelativePath = (String) messageContext.getProperty(Constants.URL_PATH);
+        String actualQuery = (String) messageContext.getProperty(Constants.URL_QUERY);
+        assertEquals("https://example.com/api", actualBasePath);
+        assertEquals("/v1/resources/42", actualRelativePath);
+        assertEquals("", actualQuery);
     }
 
     @Test

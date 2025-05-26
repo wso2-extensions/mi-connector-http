@@ -24,6 +24,6 @@
     <sequence>
         <property name="httpConnectorConnectionName" expression="$func:name"/>
         <property name="httpConnectorConnectionEndpointName" expression="concat($func:name, '_INTERNAL_ENDPOINT_REFERENCE')"/>
-        <property name="uri.var.base" expression="$func:baseUrl"/>
+        <property name="HTTP_CONN_BASE_PATH" expression="$func:baseUrl"/>
     </sequence>
 </template>

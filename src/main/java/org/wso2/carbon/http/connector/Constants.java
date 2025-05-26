@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 public class Constants {
 
+    public static final String BASE_PATH_IDENTIFIER = "HTTP_CONN_BASE_PATH";
     public static final String RELATIVE_PATH_IDENTIFIER = "HTTP_CONN_RELATIVE_PATH";
     public static final String HEADERS_IDENTIFIER = "HTTP_CONN_HEADERS";
     public static final String REQUEST_BODY_TYPE_IDENTIFIER = "HTTP_CONN_REQUEST_BODY_TYPE";
@@ -32,7 +33,9 @@ public class Constants {
     public static final String JSON_TYPE = "JSON";
     public static final String XML_TYPE = "XML";
     public static final String TEXT_TYPE = "TEXT";
+    public static final String URL_BASE =  "uri.var.base";
     public static final String URL_PATH = "uri.var.path";
+    public static final String URL_QUERY = "uri.var.query";
     public static final String SINGLE_QUOTE = "\'";
     public static final String XML_CONTENT_TYPE = "application/xml";
     public static final String JSON_CONTENT_TYPE = "application/json";
@@ -40,4 +43,5 @@ public class Constants {
     public static final String SOAP11_CONTENT_TYPE = "text/xml";
     public static final String SOAP12_CONTENT_TYPE = "application/soap+xml";
     public static final String EMPTY_LIST = "[]";
+    public static final String FORWARD_SLASH = "/";
 }

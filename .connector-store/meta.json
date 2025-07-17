@@ -12,63 +12,859 @@
     "type": "Connector",
     "releases": [
         {
-            "tagName": "v0.1.11",
+            "tagName": "v0.1.12",
             "products": [
                 "MI 4.4.0"
             ],
             "operations": [
                 {
-                    "name":"init",
-                    "description":"Config operation",
-                    "isHidden":true
+                    "name": "head",
+                    "description": "Send HEAD Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "requestBodyType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "JSON",
+                            "description": "Supported values: JSON, XML, TEXT"
+                        },
+                        {
+                            "name": "requestBodyJson",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${payload}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyXml",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyText",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"get",
-                    "description":"Send an HTTP GET request.",
-                    "isHidden":false
+                    "name": "patch",
+                    "description": "Send PATCH Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "requestBodyType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "JSON",
+                            "description": "Supported values: JSON, XML, TEXT"
+                        },
+                        {
+                            "name": "requestBodyJson",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${payload}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyXml",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyText",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"delete",
-                    "description":"Send an HTTP DELETE request.",
-                    "isHidden":false
+                    "name": "put",
+                    "description": "Send PUT Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "requestBodyType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "JSON",
+                            "description": "Supported values: JSON, XML, TEXT"
+                        },
+                        {
+                            "name": "requestBodyJson",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${payload}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyXml",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyText",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "forcePostPutNobody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Allow sending a request without a body for POST and PUT HTTP methods. Applicable only for HTTP PassThrough transport."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"post",
-                    "description":"Send an HTTP POST request.",
-                    "isHidden":false
+                    "name": "get",
+                    "description": "Send GET Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"put",
-                    "description":"Send an HTTP PUT request.",
-                    "isHidden":false
+                    "name": "delete",
+                    "description": "Send DELETE Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"patch",
-                    "description":"Send an HTTP PATCH request.",
-                    "isHidden":false
+                    "name": "options",
+                    "description": "Send OPTIONS Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "requestBodyType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "JSON",
+                            "description": "Supported values: JSON, XML, TEXT"
+                        },
+                        {
+                            "name": "requestBodyJson",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${payload}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyXml",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyText",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 },
                 {
-                    "name":"head",
-                    "description":"Send an HTTP HEAD request.",
-                    "isHidden":false
-                },
-                {
-                    "name":"options",
-                    "description":"Send an HTTP OPTIONS request.",
-                    "isHidden":false
+                    "name": "post",
+                    "description": "Send POST Request",
+                    "params": [
+                        {
+                            "name": "relativePath",
+                            "type": "stringWithParamManager",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Enter the relative path for the specific API endpoint, appended to the base URL."
+                        },
+                        {
+                            "name": "requestBodyType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "JSON",
+                            "description": "Supported values: JSON, XML, TEXT"
+                        },
+                        {
+                            "name": "requestBodyJson",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${payload}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyXml",
+                            "type": "expressionTextArea",
+                            "required": true,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "requestBodyText",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "${xpath('$body/node()')}",
+                            "description": ""
+                        },
+                        {
+                            "name": "forceScAccepted",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                        },
+                        {
+                            "name": "disableChunking",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP chunking for outgoing messages, calculating content length before sending to the backend."
+                        },
+                        {
+                            "name": "forceHttp10",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Force HTTP 1.0 for outgoing HTTP messages."
+                        },
+                        {
+                            "name": "noKeepAlive",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Disable HTTP keep-alive for outgoing requests."
+                        },
+                        {
+                            "name": "forcePostPutNobody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": false,
+                            "description": "Allow sending a request without a body for POST and PUT HTTP methods. Applicable only for HTTP PassThrough transport."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "true",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
                 }
             ],
             "connections": [
                 {
-                    "name": "HTTP",
-                    "description": "Connection for interacting with HTTP endpoints."
+                    "name": "HTTPS",
+                    "description": "HTTPS Connection",
+                    "params": [
+                        {
+                            "name": "baseUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "https://",
+                            "description": "Enter the base URL of the service, which serves as the root endpoint for all API requests."
+                        },
+                        {
+                            "name": "certificateConfigurable",
+                            "type": "popUp",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Certificates are managed as configurables for the project. To add a certificate as a configurable, navigate to the Configurables section on the Project Overview page."
+                        },
+                        {
+                            "name": "authType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "None",
+                            "description": "Supported values: None, Basic Auth, OAuth"
+                        },
+                        {
+                            "name": "oauthAuthorizationMode",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Header",
+                            "description": "Supported values: Header, Payload"
+                        },
+                        {
+                            "name": "oauthGrantType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "Authorization Code",
+                            "description": "Supported values: Authorization Code, Client Credentials, Password"
+                        },
+                        {
+                            "name": "username",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Enter Username"
+                        },
+                        {
+                            "name": "password",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Enter Password"
+                        },
+                        {
+                            "name": "clientId",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "clientSecret",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "tokenUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "refreshToken",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "additionalProperties",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "timeoutDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "timeoutAction",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "Never",
+                            "description": "Never: No action performed, Discard: Discard the callback, Fault: Discard the callback and execute defined fault sequence Supported values: Never, Discard, Fault"
+                        },
+                        {
+                            "name": "retryErrorCodes",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Provide a comma separated error codes list"
+                        },
+                        {
+                            "name": "retryCount",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "0",
+                            "description": ""
+                        },
+                        {
+                            "name": "retryDelay",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "0",
+                            "description": "The time to wait between the last retry attempt and the next retry."
+                        },
+                        {
+                            "name": "suspendErrorCodes",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Provide a comma separated error codes list"
+                        },
+                        {
+                            "name": "suspendInitialDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "-1",
+                            "description": "The initial suspend duration when the connection is marked as inactive"
+                        },
+                        {
+                            "name": "suspendProgressionFactor",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "1",
+                            "description": "Next suspend duration = Previous suspend duration * Suspend duration ratio"
+                        },
+                        {
+                            "name": "suspendMaximumDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Suspend duration = the minimum of maximum suspend duration and calculated suspend duration"
+                        }
+                    ]
                 },
                 {
-                    "name": "HTTPS",
-                    "description": "Connection for interacting with HTTPS endpoints."
+                    "name": "HTTP",
+                    "description": "HTTP Connection",
+                    "params": [
+                        {
+                            "name": "baseUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "http://",
+                            "description": "Enter the base URL of the service, which serves as the root endpoint for all API requests."
+                        },
+                        {
+                            "name": "authType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "None",
+                            "description": "Supported values: None, Basic Auth, OAuth"
+                        },
+                        {
+                            "name": "oauthAuthorizationMode",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Header",
+                            "description": "Supported values: Header, Payload"
+                        },
+                        {
+                            "name": "oauthGrantType",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "Authorization Code",
+                            "description": "Supported values: Authorization Code, Client Credentials, Password"
+                        },
+                        {
+                            "name": "username",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Enter Username"
+                        },
+                        {
+                            "name": "password",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Enter Password"
+                        },
+                        {
+                            "name": "clientId",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "clientSecret",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "tokenUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "refreshToken",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "additionalProperties",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "timeoutDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": ""
+                        },
+                        {
+                            "name": "timeoutAction",
+                            "type": "combo",
+                            "required": false,
+                            "defaultValue": "Never",
+                            "description": "Never: No action performed, Discard: Discard the callback, Fault: Discard the callback and execute defined fault sequence Supported values: Never, Discard, Fault"
+                        },
+                        {
+                            "name": "retryErrorCodes",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Provide a comma separated error codes list"
+                        },
+                        {
+                            "name": "retryCount",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "0",
+                            "description": ""
+                        },
+                        {
+                            "name": "retryDelay",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "0",
+                            "description": "The time to wait between the last retry attempt and the next retry."
+                        },
+                        {
+                            "name": "suspendErrorCodes",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Provide a comma separated error codes list"
+                        },
+                        {
+                            "name": "suspendInitialDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "-1",
+                            "description": "The initial suspend duration when the connection is marked as inactive"
+                        },
+                        {
+                            "name": "suspendProgressionFactor",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "1",
+                            "description": "Next suspend duration = Previous suspend duration * Suspend duration ratio"
+                        },
+                        {
+                            "name": "suspendMaximumDuration",
+                            "type": "string",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Suspend duration = the minimum of maximum suspend duration and calculated suspend duration"
+                        }
+                    ]
                 }
-            ],
-            "isHidden": false
+            ]
         }
     ],
     "labels": [

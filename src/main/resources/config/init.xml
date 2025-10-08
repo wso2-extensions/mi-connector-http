@@ -25,5 +25,6 @@
         <property name="httpConnectorConnectionName" expression="$func:name"/>
         <property name="httpConnectorConnectionEndpointName" expression="concat($func:name, '_INTERNAL_ENDPOINT_REFERENCE')"/>
         <property name="HTTP_CONN_BASE_PATH" expression="$func:baseUrl"/>
+        <property name="APPEND_ARTIFACT_IDENTIFIER" value="true" type="BOOLEAN" />
     </sequence>
 </template>

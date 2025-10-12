@@ -124,8 +124,8 @@ jobs:
                       params.append({
                           'name': value.get('name', ''),
                           'type': input_type,
-                          'required': value.get('required', '').lower() == 'true',
-                          'defaultValue': value.get('defaultValue', ''),
+                          'required': str(value.get('required', '').lower() == 'true'),
+                          'defaultValue': str(value.get('defaultValue', '')),
                           'description': description
                       })
                   

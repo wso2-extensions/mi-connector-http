@@ -44,4 +44,5 @@ public class Constants {
     public static final String SOAP12_CONTENT_TYPE = "application/soap+xml";
     public static final String EMPTY_LIST = "[]";
     public static final String FORWARD_SLASH = "/";
+    public static final String QUESTION_MARK = "?";
 }

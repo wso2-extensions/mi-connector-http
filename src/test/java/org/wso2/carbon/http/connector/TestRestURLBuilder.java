@@ -87,9 +87,47 @@ public class TestRestURLBuilder {
         String actualBasePath = (String) messageContext.getProperty(Constants.URL_BASE);
         String actualRelativePath = (String) messageContext.getProperty(Constants.URL_PATH);
         String actualQuery = (String) messageContext.getProperty(Constants.URL_QUERY);
-        assertEquals("https://example.com/api", actualBasePath);
-        assertEquals("/v1/resources/42", actualRelativePath);
+        assertEquals("https://example.com/api/v1/resources/42", actualBasePath + actualRelativePath);
         assertEquals("", actualQuery);
+    }
+
+    @Test
+    public void testProcessUrlBasePathRelativePathConcatenationForwardSlashCombinations() throws AxisFault {
+        String[][] cases = new String[][]{
+            {"https://example.com/api/", "", "https://example.com/api/"},
+            {"https://example.com/api/", "/", "https://example.com/api/"},
+            {"https://example.com/api/", "/v1", "https://example.com/api/v1"},
+            {"https://example.com/api/", "v1", "https://example.com/api/v1"},
+            {"https://example.com/api", "", "https://example.com/api"},
+            {"https://example.com/api", "/", "https://example.com/api/"},
+            {"https://example.com/api", "/v1", "https://example.com/api/v1"},
+            {"https://example.com/api", "v1", "https://example.com/api/v1"},
+            {"https://example.com/api", "v1?id=1", "https://example.com/api/v1?id=1"},
+            {"https://example.com/api/", "v1?id=1", "https://example.com/api/v1?id=1"},
+            {"https://example.com/api", "?id=1", "https://example.com/api?id=1"},
+            {"https://example.com/api/", "?id=1", "https://example.com/api/?id=1"},
+            {"https://example.com/api", "/?id=1", "https://example.com/api/?id=1"},
+            {"https://example.com/api?id=1&name=John", "", "https://example.com/api?id=1&name=John"},
+        };
+
+        RestURLBuilder restURLBuilder = new RestURLBuilder();
+        for (String[] tc : cases) {
+            String basePath = tc[0];
+            String relativePath = tc[1];
+            String expected = tc[2];
+
+            MessageContext messageContext = createMessageContext();
+            messageContext.setProperty(Constants.BASE_PATH_IDENTIFIER, basePath);
+            messageContext.setProperty(Constants.RELATIVE_PATH_IDENTIFIER, relativePath);
+            restURLBuilder.connect(messageContext);
+            String actualBasePath = (String) messageContext.getProperty(Constants.URL_BASE);
+            String actualRelativePath = (String) messageContext.getProperty(Constants.URL_PATH);
+            String actualQuery = (String) messageContext.getProperty(Constants.URL_QUERY);
+
+            assertEquals("Failed for case: basePath=\"" + basePath + "\" relativePath=\"" + relativePath + "\"",
+                    expected, actualBasePath + actualRelativePath);
+            assertEquals("", actualQuery);
+        }
     }
 
     @Test

@@ -132,13 +132,30 @@ public class RestURLBuilder extends AbstractConnector {
     private void processAndResolveUrl(MessageContext messageContext, String basePath, String relativePath) {
 
         try {
-            basePath = StringUtils.stripEnd(basePath.trim(), FORWARD_SLASH);
-            relativePath = InlineExpressionUtil.processInLineSynapseExpressionTemplate(messageContext, relativePath).trim();
-            if (!relativePath.startsWith(FORWARD_SLASH)) {
-                relativePath = FORWARD_SLASH + relativePath;
+            String trimmedBasePath = StringUtils.trimToEmpty(basePath);
+            String trimmedRelativePath = StringUtils.trimToEmpty(relativePath);
+
+            // Process inline expressions in the relative path
+            String resolvedRelativePath = InlineExpressionUtil
+                    .processInLineSynapseExpressionTemplate(messageContext, trimmedRelativePath)
+                    .trim();
+
+            // Skip path concatenation logic if relative path starts with a query parameter
+            if (!resolvedRelativePath.startsWith(Constants.QUESTION_MARK)) {
+                boolean baseEndsWithSlash = trimmedBasePath.endsWith(FORWARD_SLASH);
+                boolean relativeStartsWithSlash = resolvedRelativePath.startsWith(FORWARD_SLASH);
+
+                if (baseEndsWithSlash && relativeStartsWithSlash) {
+                    resolvedRelativePath = resolvedRelativePath.substring(1);
+                } else if (!baseEndsWithSlash && !relativeStartsWithSlash
+                        && StringUtils.isNotEmpty(trimmedBasePath)
+                        && StringUtils.isNotEmpty(resolvedRelativePath)) {
+                    trimmedBasePath += FORWARD_SLASH;
+                }
             }
-            messageContext.setProperty(Constants.URL_BASE, basePath);
-            messageContext.setProperty(Constants.URL_PATH, relativePath);
+
+            messageContext.setProperty(Constants.URL_BASE, trimmedBasePath);
+            messageContext.setProperty(Constants.URL_PATH, resolvedRelativePath);
             messageContext.setProperty(Constants.URL_QUERY, StringUtils.EMPTY);
         } catch (JaxenException e) {
             handleException("Error while processing relative path: " + relativePath, e, messageContext);

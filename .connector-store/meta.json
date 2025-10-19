@@ -12,7 +12,7 @@
     "type": "Connector",
     "releases": [
         {
-            "tagName": "v0.1.13",
+            "tagName": "v0.1.14",
             "products": [
                 "MI 4.5.0",
                 "MI 4.4.0"

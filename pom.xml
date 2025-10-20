@@ -21,7 +21,7 @@
 
   <groupId>org.wso2.integration.connector</groupId>
   <artifactId>mi-connector-http</artifactId>
-  <version>0.1.14</version>
+  <version>0.1.14-SNAPSHOT</version>
 
   <name>WSO2 Carbon - HTTP Connector</name>
   <url>http://wso2.org</url>

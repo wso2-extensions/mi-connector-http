@@ -4,7 +4,7 @@
 
 | Connector Version | Supported WSO2 MI Version |
 |-------------------|---------------------------|
-| 0.1.0             | MI 4.4.0                  |
+| 0.1.14            | MI 4.5.0, MI 4.4.0        |
 
 
 ## Documentation
@@ -17,4 +17,4 @@ Follow the steps given below to build the connector from the source code:
 
 1. Get a clone or download the source from [Github](https://github.com/wso2-extensions/mi-connector-http/).
 2. Run the following Maven command from the `mi-connector-http` directory: `mvn clean install`.
-3. The ZIP with the Facebook Ads connector is created in the `mi-connector-http/target` directory.
+3. The ZIP with the HTTP connector is created in the `mi-connector-http/target` directory.

@@ -89,12 +89,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "forceScAccepted",
-                    "displayName": "Force immediate 202 Response",
+                    "name": "noKeepAlive",
+                    "displayName": "No Keep-Alive",
                     "inputType": "checkbox",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
+                    "helpTip": "Disable HTTP keep-alive for outgoing requests."
                   }
                 },
                 {
@@ -122,12 +122,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "noKeepAlive",
-                    "displayName": "No Keep-Alive",
+                    "name": "forceScAccepted",
+                    "displayName": "Force immediate 202 Response",
                     "inputType": "checkbox",
                     "defaultValue": false,
                     "required": "false",
-                    "helpTip": "Disable HTTP keep-alive for outgoing requests."
+                    "helpTip": "Force a 202 HTTP response to the client immediately after the Micro Integrator receives the message."
                   }
                 }
               ]

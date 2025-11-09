@@ -179,7 +179,8 @@
                     "inputType": "string",
                     "defaultValue": "",
                     "required": "false",
-                    "helpTip": "",
+                    "helpTip": "Enter comma-separated key:value pairs (e.g., key1:value1,key2:value2)",
+                    "placeholder": "key1:value1,key2:value2",
                     "enableCondition": [{"authType": "OAuth"}]
                   }
                 }

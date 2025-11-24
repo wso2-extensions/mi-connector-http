@@ -9,7 +9,7 @@
 
 ## Documentation
 
-Please refer to the [HTTP Overview](https://mi.docs.wso2.com/en/latest/reference/connectors/http-connector/http-connector-overview/) documentation.
+Please refer to the [HTTP Connector Overview](https://mi.docs.wso2.com/en/latest/reference/connectors/http-connector/http-connector-overview/) documentation.
 
 ### Building From the Source
 

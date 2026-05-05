@@ -15,7 +15,8 @@
             "tagName": "v0.1.14",
             "products": [
                 "MI 4.5.0",
-                "MI 4.4.0"
+                "MI 4.4.0",
+                "MI 4.6.0"
             ],
             "operations": [
                 {
@@ -81,7 +82,7 @@
                         {
                             "name": "noKeepAlive",
                             "type": "checkbox",
-                            "required":false,
+                            "required": false,
                             "defaultValue": "False",
                             "description": "Disable HTTP keep-alive for outgoing requests."
                         },

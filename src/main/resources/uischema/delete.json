@@ -76,6 +76,70 @@
                       }
                     ]
                   }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyType",
+                    "displayName": "Content Type",
+                    "inputType": "combo",
+                    "defaultValue": "",
+                    "required": "false",
+                    "comboValues": [
+                      "JSON",
+                      "XML",
+                      "TEXT"
+                    ],
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyJson",
+                    "displayName": "Request Body",
+                    "inputType": "expressionTextArea",
+                    "defaultValue": "${payload}",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "JSON"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyXml",
+                    "displayName": "Request Body",
+                    "inputType": "expressionTextArea",
+                    "defaultValue": "${xpath('$body/node()')}",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "XML"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "requestBodyText",
+                    "displayName": "Request Body",
+                    "inputType": "expressionTextArea",
+                    "defaultValue": "${xpath('$body/node()')}",
+                    "required": "false",
+                    "helpTip": "",
+                    "enableCondition": [
+                      {
+                        "requestBodyType": "TEXT"
+                      }
+                    ]
+                  }
                 }
               ]
             }
